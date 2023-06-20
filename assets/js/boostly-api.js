@@ -4,6 +4,7 @@
         $(document).ready(function() {
 
             $(document).on('click', '#boostly_api_sync_listings', function(e) {
+                $(this).die('click');
                 var $button = $(e.target).prop('disabled', true);
                 var $spin = $button.next('.spinner').addClass('is-active');
                 $spin.show();

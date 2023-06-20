@@ -51,13 +51,5 @@ function boostly_api_settings_page() {
     </div>
 <?php
 
-wp_insert_post( array(
-   'post_title'    => 'ivan',
-   'post_type'     => 'listings',
-   'post_content'  => 'desc ivan',
-   'post_status'   => 'publish',
-   'post_date'     => date( 'Y-m-d H:i:s', time() ),
-   'post_author'   => get_current_user_id()
-), true);
 
 }

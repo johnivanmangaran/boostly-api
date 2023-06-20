@@ -165,9 +165,9 @@ function boostly_reading_csv() {
     // var_dump(json_encode($listings_data));
     foreach ($listings_data as $listing_data) {
         if (is_array($listing_data)) {
-            echo "<pre>";
-            var_dump($listing_data);
-            echo "</pre>";
+            // echo "<pre>";
+            // var_dump($listing_data);
+            // echo "</pre>";
             $post_id = wp_insert_post(
                array(
                        'post_title'    => $listing_data['name'],
@@ -215,8 +215,45 @@ function boostly_reading_csv() {
                 update_post_meta($post_id, 'listing_longitude', $listing_data['longitude']);
             }
 
+            if ($listing_data['feature_image']) {
+                $attachment_id = boostly_images_upload($listing_data['feature_image']);
+                set_post_thumbnail($post_id, $attachment_id);
+            }
+            // var_dump( boostly_images_upload($listing_data['feature_image']));
 
         }
-        break;
+        // break;
     }
+}
+// add_action('init', 'boostly_images_upload', 0);
+function boostly_images_upload($imageurl){
+    include_once( ABSPATH . 'wp-admin/includes/image.php' );
+
+    // $imageurl = "https://a0.muscache.com/im/pictures/miso/Hosting-33996825/original/082485ca-b801-4f51-87aa-84e682871df9.jpeg?im_w=1200";
+    $imagetype = end(explode('/', getimagesize($imageurl)['mime']));
+    $uniq_name = date('dmY').''.(int) microtime(true); 
+    $filename = $uniq_name.'.'.$imagetype;
+
+    $uploaddir = wp_upload_dir();
+    $uploadfile = $uploaddir['path'] . '/' . $filename;
+    $contents= file_get_contents($imageurl);
+    $savefile = fopen($uploadfile, 'w');
+    fwrite($savefile, $contents);
+    fclose($savefile);
+
+    $wp_filetype = wp_check_filetype(basename($filename), null );
+    $attachment = array(
+        'post_mime_type' => $wp_filetype['type'],
+        'post_title' => $filename,
+        'post_content' => '',
+        'post_status' => 'inherit'
+    );
+
+    $attach_id = wp_insert_attachment( $attachment, $uploadfile );
+    $imagenew = get_post( $attach_id );
+    $fullsizepath = get_attached_file( $imagenew->ID );
+    $attach_data = wp_generate_attachment_metadata( $attach_id, $fullsizepath );
+    wp_update_attachment_metadata( $attach_id, $attach_data ); 
+
+    return $attach_id;
 }

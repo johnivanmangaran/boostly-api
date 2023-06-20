@@ -189,9 +189,9 @@ if( !function_exists( 'boostly_api_sync_listings_ajax' ) ) {
             if (is_array($listing_data)) {
                 
                 if ($listing_data['city']) {
-                    echo "<pre>";
-                    var_dump($listing_data);
-                    echo "</pre>";
+                    // echo "<pre>";
+                    // var_dump($listing_data);
+                    // echo "</pre>";
                     // wp_set_post_terms(25, $listing_data['city'], 'listing_city');
                 }
                 boostly_api_add_listing($listing_data);
@@ -289,9 +289,6 @@ if( !function_exists( 'boostly_api_add_listing' ) ) {
             boostly_set_listing_category($listing_data['type'], $post_id, 'listing_type');
         }
 
-
-
-        // var_dump( boostly_images_upload($listing_data['feature_image']));
     }
 }
 

@@ -130,16 +130,17 @@ function boostly_api_custom_fields($post) {
             </div>
         </div>
         <div>
-        <?= boostly_reading_csv(); ?>
+        <?= boostly_api_sync_listings(); ?>
         </div>
 
     </div>
     <?php
+
 }
 
 
-// add_action('init', 'boostly_reading_csv', 0);
-function boostly_reading_csv() {
+// add_action('init', 'boostly_api_sync_listings', 0);
+function boostly_api_sync_listings() {
     $file = "http://localhost/staging-api/wp-content/plugins/boostly-api/demo-listings.csv"; 
     $handle = fopen($file, "r") or die("Error opening file");
 
@@ -168,16 +169,14 @@ function boostly_reading_csv() {
             // echo "<pre>";
             // var_dump($listing_data);
             // echo "</pre>";
-            $post_id = wp_insert_post(
-               array(
-                       'post_title'    => $listing_data['name'],
-                       'post_type'     => 'listings',
-                       'post_content'  => $listing_data['description'],
-                       'post_status'   => 'draft',
-                       'post_date'     => date( 'Y-m-d H:i:s', time() ),
-                       'post_author'   => get_current_user_id()
-                )
-            );
+            $post_id = wp_insert_post( array(
+               'post_title'    => $listing_data['name'],
+               'post_type'     => 'listings',
+               'post_content'  => $listing_data['description'],
+               'post_status'   => 'draft',
+               'post_date'     => date( 'Y-m-d H:i:s', time() ),
+               'post_author'   => get_current_user_id()
+            ), true);
 
             if ($listing_data['guests']) {
                 update_post_meta($post_id, 'listing_guests', $listing_data['guests']);
@@ -222,7 +221,7 @@ function boostly_reading_csv() {
             // var_dump( boostly_images_upload($listing_data['feature_image']));
 
         }
-        // break;
+        break;
     }
 }
 // add_action('init', 'boostly_images_upload', 0);

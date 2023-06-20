@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 //Custom Post Type
 require_once 'classes/class-custom-post-type.php';
-
+require_once 'functions/functions.php';
 
 function rewrite_listings_flush(){
     create_listing_cpt();

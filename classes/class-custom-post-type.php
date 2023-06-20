@@ -1,4 +1,19 @@
 <?php
+
+
+//Custom Post Type
+add_action('init', 'create_listing_cpt', 0);
+
+//Custom Taxonomy
+add_action('init', 'category_listing_type', 0);
+add_action('init', 'category_listing_city', 0);
+add_action('init', 'category_listing_country', 0);
+add_action('init', 'category_listing_state', 0);
+add_action('init', 'category_listing_amenities', 0);
+
+//Listing Save Post
+add_action('save_post','save_meta_box_data');
+
 //Custom Listing Post Type
 function create_listing_cpt() {
     $labels = array(
@@ -30,6 +45,7 @@ function create_listing_cpt() {
         'menu_icon' => 'dashicons-admin-multisite',
         'menu_position' => 20,
         'can_export' => true,
+        'custom-fields' => true,
         'show_in_rest'       => true,
         'supports' => array('title','editor','thumbnail','revisions','author','page-attributes','excerpt'),
     );
@@ -38,13 +54,35 @@ function create_listing_cpt() {
 
     register_post_type('listing',$args);
 }
-add_action('init', 'create_listing_cpt', 0);
+
 //Custom Listing Post Type End
 
 //Custom Taxonomy of Listing Post Type
 
+//Listing Type Category
+function category_listing_type() {
+
+    $listing_city_labels = array(
+        'name'              => esc_html__('Listing Type','boostly-api-training'),
+        'add_new_item'      => esc_html__('Add New','boostly-api-training'),
+        'new_item_name'     => esc_html__('New Listing Type','boostly-api-training')
+    );
+    $listing_city_labels = apply_filters( 'category_listing_type_labels', $listing_city_labels );
+
+    $args = array(
+        'labels' => $listing_city_labels,
+        'hierarchical'  => true,
+        'query_var'     => true,
+        'show_in_rest'  => true,
+        'rest_base'     => 'listing_type',
+    );
+    $args = apply_filters( 'category_listing_type_args', $args );
+
+    register_taxonomy('listing_type', 'listing', $args);
+}
+
 //Listings City Category
-add_action('init', 'category_listing_city', 0);
+
 function category_listing_city() {
 
     $listing_city_labels = array(
@@ -63,11 +101,10 @@ function category_listing_city() {
     );
     $args = apply_filters( 'category_listing_city_args', $args );
 
-    register_taxonomy('category_listing_city', 'listing', $args);
+    register_taxonomy('listing_city', 'listing', $args);
 }
 
 //Listings Country Category
-add_action('init', 'category_listing_country', 0);
 function category_listing_country() {
 
     $listing_country_labels = array(
@@ -86,12 +123,11 @@ function category_listing_country() {
     );
     $args = apply_filters( 'category_listing_country_args', $args );
 
-    register_taxonomy('category_listing_country', 'listing', $args);
+    register_taxonomy('listing_country', 'listing', $args);
 }
 
 
 //Listings State Category
-add_action('init', 'category_listing_state', 0);
 function category_listing_state() {
 
     $listing_state_labels = array(
@@ -110,31 +146,74 @@ function category_listing_state() {
     );
     $args = apply_filters( 'category_listing_state_args', $args );
 
-    register_taxonomy('category_listing_state', 'listing', $args);
+    register_taxonomy('listing_state', 'listing', $args);
 }
 
 //Listings Amenities Category
-add_action('init', 'category_listing_amenities', 0);
+
 function category_listing_amenities() {
 
-    $listing_state_labels = array(
-        'name'              => esc_html__('State','boostly-api-training'),
+    $listing_amenities_labels = array(
+        'name'              => esc_html__('Amenities','boostly-api-training'),
         'add_new_item'      => esc_html__('Add New','boostly-api-training'),
-        'new_item_name'     => esc_html__('New State','boostly-api-training')
+        'new_item_name'     => esc_html__('New Amenities','boostly-api-training')
     );
-    $listing_state_labels = apply_filters( 'category_listing_amenities_labels', $listing_state_labels );
+    $listing_amenities_labels = apply_filters( 'category_listing_amenities_labels', $listing_amenities_labels );
 
     $args = array(
-        'labels' => $listing_state_labels,
+        'labels' => $listing_amenities_labels,
         'hierarchical'  => true,
         'query_var'     => true,
         'show_in_rest'          => true,
-        'rest_base'             => 'listing_states',
+        'rest_base'             => 'listing_amenities',
     );
     $args = apply_filters( 'category_listing_amenities_args', $args );
 
-    register_taxonomy('category_listing_amenities', 'listing', $args);
+    register_taxonomy('listing_amenities', 'listing', $args);
 }
 
 
 //Custom Taxonomy of Listing Post Type End
+
+
+//Listing Meta Boxes
+add_action('add_meta_boxes','boostly_listing_meta_boxes');
+
+//Custom Listing Meta Boxes 
+function boostly_listing_meta_boxes() {
+    add_meta_box('listing-details', 'Listing Details', 'boostly_api_custom_fields', 'listing');
+    add_meta_box('listings-meta', 'Listing Data', 'boostly_api_meta_box_data', 'listing');
+}
+//Custom Listing Meta Boxes End
+
+//Save Listing Meta Boxes 
+function save_meta_box_data($post_id) {
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if ( $parent_id = wp_is_post_revision( $post_id )) {
+        $post_id = $parent_id;
+    }
+
+    $field_list = [
+        'listing_guests',
+        'listing_beds',
+        'listing_baths',
+        'listing_price',
+        'listing_currency',
+        'listing_address',
+        'listing_latitude',
+        'listing_longitude',
+        'listing_id',
+    ];
+        // update_post_meta($post_id, 'boostly_geolocation_long', $long);
+    foreach ($field_list as $fieldName) {
+        if (array_key_exists( $fieldName, $_POST)) {
+            update_post_meta( $post_id, $fieldName, sanitize_text_field($_POST[$fieldName]) );
+        }
+    }
+    
+
+}
+//Save Listing Meta Boxes End

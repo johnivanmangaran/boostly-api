@@ -40,10 +40,6 @@ function boostly_api_settings_page() {
                         <button type="button" id="boostly_api_sync_listings" class="button button-primary api-sync-controls" style="display:inline;">Listings Sync</button>
                     </div>
                 </div>
-<!--                 <p class="submit" style="clear: both;">
-                    <input type="submit" name="Submit" class="button-primary" value="Update Settings" />
-                    <input type="hidden" name="boostly-pms-settings-submit" value="Y" />
-                </p> -->
             </form>
 
         </div>

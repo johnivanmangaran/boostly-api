@@ -20,31 +20,17 @@ require_once 'classes/class-custom-post-type.php';
 require_once 'functions/functions.php';
 require_once 'settings/settings.php';
 
+add_action( 'wp_ajax_handle_request', 'handle_request' );
+add_action( 'wp_ajax_nopriv_handle_request', 'handle_request' ); 
+wp_enqueue_script('boostly_api', plugin_dir_url( __FILE__ ).'/assets/js/boostly-api.js', array('jquery'), '1.0.0', true);
+
 function rewrite_listings_flush(){
     create_listing_cpt();
     flush_rewrite_rules();
 }
 
-/**
- * boostly_api_define_constants
- *
- * @param  mixed $version
- * @return void
- */
-function boostly_api_define_constants($version)
-{
-    define('BOOSTLY_API_PLUGIN_FILE', __FILE__);
-    define('BOOSTLY_API_VERSION', $version);
-    define('BOOSTLY_API_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-}
-
-
-/**
- *  Enqueue all admin styles and scripts
- */
-function boostly_hostfully_enqueue_admin_scripts()
-{
-    wp_enqueue_script('boostly_api', plugins_url('/assets/js/boostly-api.js', BOOSTLY_API_PLUGIN_FILE), ['jquery'], BOOSTLY_API_VERSION);
-}
 
 register_activation_hook( __FILE__, 'flush_rewrite_rules');
+?>
+
+

@@ -3,21 +3,29 @@
         $(document).ready(function() {
 
             $(document).on('click', '#boostly_api_sync_listings', function(e) {
-                $(this).text('Listings Syncing..');
-                console.log(ajaxurl);
+                
                 $.ajax({
                     url: ajaxurl,
-                    dataType: "json",
+                    type: "POST",
                     method: "POST",
                     data: {
                         action: 'boostly_api_sync_listings_ajax'
                     },
+                    beforeSend: function() {
+                        $("#boostly_api_sync_listings").html('Listings Syncing..');
+
+                    },
                     success: function(response) {
-                        $(this).text('Listings Sync');
+                        $("#boostly_api_sync_listings").html('Listings Sync Successfully');
                         console.log(response);
+                        alert('Successfully');
+                        setTimeout(function() {
+                            $("#boostly_api_sync_listings").html('Listings Sync');
+                        }, 5000);
                     },
                     error: function(error) {
-                        console.log(error);
+                        $("#boostly_api_sync_listings").text('Listings Sync Error...');
+                        console.log(JSON.parse(error));
                     }
                 });
 

@@ -206,6 +206,7 @@ function save_meta_box_data($post_id) {
         'listing_latitude',
         'listing_longitude',
         'listing_id',
+        'listing_gallery',
     ];
         // update_post_meta($post_id, 'boostly_geolocation_long', $long);
     foreach ($field_list as $fieldName) {

@@ -22,7 +22,18 @@ require_once 'settings/settings.php';
 
 add_action( 'wp_ajax_handle_request', 'handle_request' );
 add_action( 'wp_ajax_nopriv_handle_request', 'handle_request' ); 
-wp_enqueue_script('boostly_api', plugin_dir_url( __FILE__ ).'/assets/js/boostly-api.js', array('jquery'), '1.0.0', true);
+wp_enqueue_script('boostly_api_js', plugin_dir_url( __FILE__ ).'/assets/js/boostly-api.js', array('jquery'), '1.0.0', true);
+wp_enqueue_style('boostly_api_css', plugin_dir_url( __FILE__ ).'/assets/css/boostly-api.css');
+
+// wp_register_script( 'bootstrap_js', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js', null, null, true );
+// wp_enqueue_script('bootstrap_js');
+
+// wp_register_style( 'fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' );
+// wp_enqueue_style('fontawesome');
+// wp_register_style( 'bootstrap_css', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css' );
+// wp_enqueue_style('bootstrap_css');
+
+
 
 function rewrite_listings_flush(){
     create_listing_cpt();

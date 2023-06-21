@@ -149,104 +149,81 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
 }
 add_action( 'wp_ajax_nopriv_boostly_api_sync_listings_ajax', 'boostly_api_sync_listings_ajax' );
 add_action( 'wp_ajax_boostly_api_sync_listings_ajax', 'boostly_api_sync_listings_ajax' );
-    function boostly_api_sync_listings_ajax(){
-        ob_start();
-        $file = "http://localhost/staging-api/wp-content/plugins/boostly-api/demo-listings.csv"; 
-        $handle = fopen($file, "r") or die("Error opening file");
+function boostly_api_sync_listings_ajax(){
+    ob_start();
+    $file = "http://localhost/staging-api/wp-content/plugins/boostly-api/demo-listings.csv"; 
+    $handle = fopen($file, "r") or die("Error opening file");
 
-        $i = 0;
-        while(($line = fgetcsv($handle)) !== FALSE) {
-            if($i == 0) {
-                $c = 0;
-                foreach($line as $col) {
-                    $cols[$c] = $col;
-                    $c++;
-                }
-            } else if($i > 0) {
-                $c = 0;
-                foreach($line as $col) {
-                    $listings_data[$i][$cols[$c]] = $col;
-                    $c++;
-                }
+    $i = 0;
+    while(($line = fgetcsv($handle)) !== FALSE) {
+        if($i == 0) {
+            $c = 0;
+            foreach($line as $col) {
+                $cols[$c] = $col;
+                $c++;
             }
-            $i++;
-        }
-        fclose($handle);
-
-        // var_dump(json_encode($listings_data));
-        foreach ($listings_data as $listing_data) {
-            if (is_array($listing_data)) {
-                
-                if ($listing_data) {
-                    // echo "<pre>";
-                    // var_dump($listing_data);
-                    // echo "</pre>";
-                    // wp_set_post_terms(25, $listing_data['city'], 'listing_city');
-                    $check_post = post_exists($listing_data['name'], '', '', 'listing');
-                    if (!$check_post) {
-                        boostly_api_add_listing($listing_data);
-                    }
-                }
-
-                
+        } else if($i > 0) {
+            $c = 0;
+            foreach($line as $col) {
+                $listings_data[$i][$cols[$c]] = $col;
+                $c++;
             }
-            // break;
         }
-        // return encode_json[$listing_data];
-
-        $response = ob_get_contents();
-        ob_end_clean();
-        echo $response;
-        die(1);
+        $i++;
     }
-// add_action( 'wp_ajax_nopriv_boostly_api_sync_listings_ajax', 'boostly_api_sync_listings_ajax' );
-// add_action( 'wp_ajax_boostly_api_sync_listings_ajax', 'boostly_api_sync_listings_ajax' );
-// if( !function_exists( 'boostly_api_sync_listings_ajax' ) ) {
-//     function boostly_api_sync_listings_ajax() {
-//         $file = "http://localhost/staging-api/wp-content/plugins/boostly-api/demo-listings.csv"; 
-//         $handle = fopen($file, "r") or die("Error opening file");
+    fclose($handle);
 
-//         $i = 0;
-//         while(($line = fgetcsv($handle)) !== FALSE) {
-//             if($i == 0) {
-//                 $c = 0;
-//                 foreach($line as $col) {
-//                     $cols[$c] = $col;
-//                     $c++;
-//                 }
-//             } else if($i > 0) {
-//                 $c = 0;
-//                 foreach($line as $col) {
-//                     $listings_data[$i][$cols[$c]] = $col;
-//                     $c++;
-//                 }
-//             }
-//             $i++;
-//         }
-//         fclose($handle);
+    // var_dump(json_encode($listings_data));
+    foreach ($listings_data as $listing_data) {
+        if (is_array($listing_data)) {
+            
+            if ($listing_data) {
+                // echo "<pre>";
+                // var_dump($listing_data);
+                // echo "</pre>";
+                // wp_set_post_terms(25, $listing_data['city'], 'listing_city');
+                $check_post = post_exists($listing_data['name'], '', '', 'listing');
+                if (!$check_post) {
+                    boostly_api_add_listing($listing_data);
+                }
+            }
 
-//         // var_dump(json_encode($listings_data));
-//         foreach ($listings_data as $listing_data) {
-//             if (is_array($listing_data)) {
-                
-//                 if ($listing_data) {
-//                     // echo "<pre>";
-//                     // var_dump($listing_data);
-//                     // echo "</pre>";
-//                     // wp_set_post_terms(25, $listing_data['city'], 'listing_city');
-//                     $check_post = post_exists($listing_data['name'], '', '', 'listing');
-//                     if (!$check_post) {
-//                         boostly_api_add_listing($listing_data);
-//                     }
-//                 }
+            
+        }
+        // break;
+    }
+    // return encode_json[$listing_data];
 
-                
-//             }
-//             // break;
-//         }
-//         return encode_json[$listing_data];
-//     }
-// }
+    $response = ob_get_contents();
+    ob_end_clean();
+    echo $response;
+    die(1);
+}
+
+add_action( 'wp_ajax_nopriv_boostly_api_delete_listings_ajax', 'boostly_api_delete_listings_ajax' );
+add_action( 'wp_ajax_boostly_api_delete_listings_ajax', 'boostly_api_delete_listings_ajax' );
+function boostly_api_delete_listings_ajax(){
+    $listing_posts= get_posts( array('post_type'=>'listing','numberposts'=>-1) );
+    foreach ($listing_posts as $listing_post) {
+        wp_delete_post( $listing_post->ID, true );
+        $taxonomies = get_taxonomies(['object_type' => ['listing']]);
+        foreach ( $taxonomies as $name ) {
+            delete_all_terms($name);
+        }
+    }
+    
+}
+if( !function_exists( 'delete_all_terms' ) ) {
+    function delete_all_terms($taxonomy_name){
+        $terms = get_terms( array(
+            'taxonomy' => $taxonomy_name,
+            'hide_empty' => false
+        ) );
+        foreach ( $terms as $term ) {
+            wp_delete_term($term->term_id, $taxonomy_name); 
+        }        
+    }
+}
 
 
 if( !function_exists( 'boostly_api_add_listing' ) ) {
@@ -301,6 +278,10 @@ if( !function_exists( 'boostly_api_add_listing' ) ) {
             $attachment_id = boostly_images_upload($listing_data['feature_image']);
             set_post_thumbnail($post_id, $attachment_id);
         }
+        if ($listing_data['galllery_images']) {
+
+        }
+        
 
         // amenities
         $amenities = explode(",",$listing_data['amenities']);

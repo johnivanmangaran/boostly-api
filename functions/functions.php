@@ -1,5 +1,101 @@
 <?php
 
+
+
+
+// boostly_api_meta_box - Availability
+if( !function_exists( 'boostly_api_metabox_availability' ) ) {
+    function boostly_api_metabox_availability($post) {
+
+        ob_start();
+        $post_id            = $post->ID;
+        $listing_id         = get_post_meta($post_id, 'listing_id', true);
+        $listing_type         = wp_get_object_terms( $post_id, 'listing_type', array( 'fields' => 'names' ) );
+        $listing_type = implode(", ", $listing_type);
+        $listing_price       = get_post_meta($post_id, 'listing_price', true);
+        ?>
+        
+        <div class="calendar-wrapper">
+            <div class="header calendar-header">
+                <p class="current-date">June 2023</p>
+                <div class="icons">
+                    <span class="material-symbols-rounded left">chevron_left</span>
+                    <span class="material-symbols-rounded right">chevron_right</span>
+                </div>
+            </div>
+            <div class="calendar calendar-body">
+                <ul class="weeks">
+                    <li>Sun</li>
+                    <li>Mon</li>
+                    <li>Tue</li>
+                    <li>Wed</li>
+                    <li>Thu</li>
+                    <li>Fri</li>
+                    <li>Sat</li>
+                </ul>
+                <ul class="days">
+                    <li>25</li>
+                    <li>26</li>
+                    <li>27</li>
+                    <li>28</li>
+                    <li>29</li>
+                    <li>30</li>
+                    <li>31</li>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>7</li>
+                    <li>8</li>
+                    <li>9</li>
+                    <li>10</li>
+                    <li>11</li>
+                    <li>12</li>
+                    <li>13</li>
+                    <li>14</li>
+                    <li>15</li>
+                    <li>16</li>
+                    <li>17</li>
+                    <li>18</li>
+                    <li>19</li>
+                    <li>20</li>
+                    <li>21</li>
+                    <li>22</li>
+                    <li>23</li>
+                    <li>24</li>
+    
+                </ul>
+            </div>
+        </div>
+
+        <table width="100%" class="display" style="text-align: left;">
+            <tbody>
+                <tr>
+                    <th style="border: 1px solid lightgray;padding: 10px;width: 20%;">Listing ID</th>
+                    <td style="border: 1px solid lightgray;padding: 10px;width: 80%;"><?= $listing_id ?></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid lightgray;padding: 10px;width: 20%;">Booked Dates</th>
+                    <td style="border: 1px solid lightgray;padding: 10px;width: 80%;"><?php //echo $listing_type ?></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid lightgray;padding: 10px;width: 50%;">Available Dates</th>
+                    <td style="border: 1px solid lightgray;padding: 10px;width: 50%;"><?php //echo $listing_price ?></td>
+                </tr>
+
+            </tbody>
+        </table>
+        
+        <?php
+        $response = ob_get_contents();
+        ob_end_clean();
+        echo $response;
+        die(1);
+    }
+}
+
 // boostly_api_meta_box - Listing Data
 if( !function_exists( 'boostly_api_meta_box_data' ) ) {
     function boostly_api_meta_box_data($post) {
@@ -55,6 +151,19 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
             'post_date'     => date( 'Y-m-d H:i:s', time() ),
             'post_author'   => get_current_user_id(),
         ));
+
+        $listing_gallery = esc_attr( get_post_meta(get_the_Id(), 'listing_gallery', true) );
+        $listing_gallery_images = explode(', ', $listing_gallery);
+        
+        $listing_gallery_html='';
+        foreach ($listing_gallery_images as $image_id) {
+            $img_url = wp_get_attachment_image_url ($image_id, 'full');
+            // echo $img_url;
+            if ($image_id) {
+                $listing_gallery_html .= '<li><a href="'.esc_url($img_url).'" target="_blank"><img data-id="'.$image_id.'" src="'.esc_url($img_url).'"></a></li>';
+            }
+        }
+        
         ?>
 
         <style>
@@ -139,14 +248,28 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                     <input type="text" name="listing_longitude" id="listing_longitude" value="<?= esc_attr( get_post_meta(get_the_Id(), 'listing_longitude', true) ) ?>">
                 </div>
             </div>
+
+            <div class="form-listing-details-row">
+                <div class="listng-fields">
+                    <label for="listing_gallery">Gallery</label>
+                    <input type="text" name="listing_gallery" id="listing_gallery" value="<?= $listing_gallery ?>">
+                    <ul id="listing_media_lists" class="listing_media_lists" name="listing_gallery">
+                        <?= $listing_gallery_html ?>
+                    </ul>
+                    <button id="listing_add_image_gallery">Upload Images</button>
+                </div>
+
+            </div>
+
             <div>
             </div>
-            <?= boostly_api_sync_listings_ajax(); ?>
         </div>
         <?php
 
     }
 }
+
+
 add_action( 'wp_ajax_nopriv_boostly_api_sync_listings_ajax', 'boostly_api_sync_listings_ajax' );
 add_action( 'wp_ajax_boostly_api_sync_listings_ajax', 'boostly_api_sync_listings_ajax' );
 function boostly_api_sync_listings_ajax(){
@@ -205,6 +328,8 @@ add_action( 'wp_ajax_boostly_api_delete_listings_ajax', 'boostly_api_delete_list
 function boostly_api_delete_listings_ajax(){
     $listing_posts= get_posts( array('post_type'=>'listing','numberposts'=>-1) );
     foreach ($listing_posts as $listing_post) {
+        $img_id = get_post_thumbnail_id($listing_post->ID);
+        wp_delete_attachment($img_id);
         wp_delete_post( $listing_post->ID, true );
         $taxonomies = get_taxonomies(['object_type' => ['listing']]);
         foreach ( $taxonomies as $name ) {
@@ -279,7 +404,20 @@ if( !function_exists( 'boostly_api_add_listing' ) ) {
             set_post_thumbnail($post_id, $attachment_id);
         }
         if ($listing_data['galllery_images']) {
-
+            $listing_gallery = get_post_meta(get_the_ID(), 'listing_gallery', true);
+            $gallery = $listing_data['galllery_images'];
+            $gallery_array = explode(',', $listing_data['galllery_images']);
+            foreach ($gallery_array as $key => $image) {
+                
+                // $attachment_id = boostly_images_upload($image);
+                var_dump($image);
+                if(!$listing_gallery){
+                    // update_post_meta($post_id, 'listing_gallery',$listing_gallery.", ".$attachment_id );
+                } else{
+                    // update_post_meta($post_id, 'listing_gallery', $attachment_id );
+                }
+            }       
+           
         }
         
 

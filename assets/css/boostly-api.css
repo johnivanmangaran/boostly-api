@@ -1,68 +1,166 @@
-#single-listing{
-        padding: 50px 20px;
-    }
-    .featured-image img{
-        height: 700px;
-        width: 100%;
-        object-fit: cover;
-    }
-    .gallery-container{
-        margin-top: 20px;
-    }
-    .gallery-container img{
-        height: 150px;
-        width: 100%;
-        object-fit: cover;
-    }
 
-    .details-container{
-        margin-top: 50px;
-    }
-    hr{
-        margin: 30px auto;
-    }
-    .propert-details-wrapper h4{
-        margin-bottom: 20px;
-    }
-    .propert-details-wrapper .wrapper{
-        padding: 15px 0;
-        border-bottom: 1px solid #ccc;
-    }
-    .propert-details-wrapper i{
-        font-size: 21px;
-    }
-    .propert-details-wrapper .icon-wrapper{
-        display: inline-block;
-        margin-right: 20px;
-        width: 25px;
-    }
-    .propert-details-wrapper .content-wrapper{
-        display: inline-block;
-        width: calc(100% - 50px);
-    }
-    .propert-details-wrapper span.value,
-    .propert-details-wrapper span.label{
-        font-size: 18px;
-    }
+.media.table-view-list {
+    display:  inline-table;
+    /* align-items: flex-start; */
+  }
 
-    .details-container .section-wrapper{
-        margin-top: 40px;
-    }
+#listing_media_lists> li{
+    display: inline-block;
+    margin-bottom: 15px;
+}
 
-    .details-container .title-wrapper{
-        margin-top: 0;
-    }
+#listing_media_lists> li:not(:last-child){
+    margin-right: 15px;
+}
 
-    .form-wrapper{
-        padding: 40px;
-        background-color: #f1f1f1;
-        border-bottom: 2px solid #ccc;
-    }
+#listing_media_lists> li img{
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
 
-    .form-wrapper form input,
-    .form-wrapper form textarea{
-        display: block;
-        width: 100%;
-        margin-bottom: 20px;
-        padding: 10px;
-    }
+.form-listing-details{
+    margin-top:  20px;
+}
+
+.form-listing-details-row{
+    width:  100%;
+    display:  flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    row-gap: 20px;
+    margin-top: 20px;
+}
+
+.form-listing-details-row:first-child{
+    margin-top: 0;
+}
+
+.listng-fields,
+.listng-fields > input{
+    width: 100%;
+}
+.listng-fields.column-2{
+    width: 49%;
+}
+.listng-fields.column-3{
+    width: 32%;
+}
+/*#single-listing{
+    padding: 50px 20px;
+}
+.featured-image img{
+    height: 700px;
+    width: 100%;
+    object-fit: cover;
+}
+.gallery-container{
+    margin-top: 20px;
+}
+.gallery-container img{
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.details-container{
+    margin-top: 50px;
+}
+hr{
+    margin: 30px auto;
+}
+.propert-details-wrapper h4{
+    margin-bottom: 20px;
+}
+.propert-details-wrapper .wrapper{
+    padding: 15px 0;
+    border-bottom: 1px solid #ccc;
+}
+.propert-details-wrapper i{
+    font-size: 21px;
+}
+.propert-details-wrapper .icon-wrapper{
+    display: inline-block;
+    margin-right: 20px;
+    width: 25px;
+}
+.propert-details-wrapper .content-wrapper{
+    display: inline-block;
+    width: calc(100% - 51px);
+}
+.propert-details-wrapper span.value,
+.propert-details-wrapper span.label{
+    font-size: 18px;
+}
+
+.details-container .section-wrapper{
+    margin-top: 40px;
+}
+
+.details-container .title-wrapper{
+    margin-top: 0;
+}
+
+.form-wrapper{
+    padding: 40px;
+    background-color: #f1f1f1;
+    border-bottom: 2px solid #ccc;
+}
+
+.form-wrapper form input,
+.form-wrapper form textarea{
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+}*/
+
+/*Search Result*/
+/*.listing-search-form{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.listing-search-form select.selectpicker{
+    display:  none;
+}
+
+.listing-search-form .form-field button.btn.dropdown-toggle span.bs-caret{
+    display:  none;
+}
+
+.listing-search-form .form-field:not(:last-child){
+    margin-right: 20px;
+}*/
+
+
+/*Listing Item Card*/
+
+/*.listing-wrapper{
+    border-top: 1px solid #ccc;
+}
+
+.listing-item .image-wrapper img{
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.listing-item .listing-info-wrapper:not(:last-child){
+    margin-right: 15px;
+}
+
+.listing-item h3.listing_title{
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.listing-wrapper .listing-column{
+    margin-bottom: 30px;
+}*/

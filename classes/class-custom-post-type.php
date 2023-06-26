@@ -47,7 +47,7 @@ function create_listing_cpt() {
         'can_export' => true,
         'custom-fields' => true,
         'show_in_rest'       => true,
-        'supports' => array('title','editor','thumbnail','revisions','author','page-attributes','excerpt'),
+        'supports' => array('title','editor','thumbnail','revisions','author','page-attributes','excerpt','gallery'),
     );
 
     $args = apply_filters( 'homey_listing_post_type_args', $args );
@@ -183,6 +183,7 @@ add_action('add_meta_boxes','boostly_listing_meta_boxes');
 function boostly_listing_meta_boxes() {
     add_meta_box('listing-details', 'Listing Details', 'boostly_api_custom_fields', 'listing');
     add_meta_box('listings-meta', 'Listing Data', 'boostly_api_meta_box_data', 'listing');
+    add_meta_box('availability', 'Availability', 'boostly_api_metabox_availability', 'listing');
 }
 //Custom Listing Meta Boxes End
 

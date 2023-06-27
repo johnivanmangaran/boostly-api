@@ -1,13 +1,7 @@
 <?php
-
-
-
-
 // boostly_api_meta_box - Availability
 if( !function_exists( 'boostly_api_metabox_availability' ) ) {
     function boostly_api_metabox_availability($post) {
-
-        ob_start();
         $post_id            = $post->ID;
         $listing_id         = get_post_meta($post_id, 'listing_id', true);
         $listing_type         = wp_get_object_terms( $post_id, 'listing_type', array( 'fields' => 'names' ) );
@@ -17,10 +11,10 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
         
         <div class="calendar-wrapper">
             <div class="header calendar-header">
-                <p class="current-date">June 2023</p>
+                <p class="current-date">May 2022</p>
                 <div class="icons">
-                    <span class="material-symbols-rounded left">chevron_left</span>
-                    <span class="material-symbols-rounded right">chevron_right</span>
+                    <span class="material-symbols-rounded left"><i class="fa-solid fa-angle-left"></i></span>
+                    <span class="material-symbols-rounded right"><i class="fa-solid fa-angle-right"></i></span>
                 </div>
             </div>
             <div class="calendar calendar-body">
@@ -34,11 +28,11 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
                     <li>Sat</li>
                 </ul>
                 <ul class="days">
-                    <li>25</li>
-                    <li>26</li>
-                    <li>27</li>
-                    <li>28</li>
-                    <li>29</li>
+                    <!-- <li class="inactive">25</li>
+                    <li class="inactive">26</li>
+                    <li class="inactive">27</li>
+                    <li class="inactive">28</li>
+                    <li class="active">29</li>
                     <li>30</li>
                     <li>31</li>
                     <li>1</li>
@@ -64,7 +58,7 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
                     <li>21</li>
                     <li>22</li>
                     <li>23</li>
-                    <li>24</li>
+                    <li>24</li> -->
     
                 </ul>
             </div>
@@ -89,10 +83,6 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
         </table>
         
         <?php
-        $response = ob_get_contents();
-        ob_end_clean();
-        echo $response;
-        die(1);
     }
 }
 
@@ -253,12 +243,14 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                 <div class="listng-fields">
                     <label for="listing_gallery">Gallery</label>
                     <input type="text" name="listing_gallery" id="listing_gallery" value="<?= $listing_gallery ?>">
+
+                    
                     <ul id="listing_media_lists" class="listing_media_lists" name="listing_gallery">
                         <?= $listing_gallery_html ?>
                     </ul>
                     <button id="listing_add_image_gallery">Upload Images</button>
                 </div>
-
+                <?php //property_gallery_metabox_callback(); ?>
             </div>
 
             <div>
@@ -267,6 +259,59 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
         <?php
 
     }
+}
+
+function property_gallery_metabox_callback(){
+	wp_nonce_field( basename(__FILE__), 'sample_nonce' );
+	global $post;
+	$gallery_data = get_post_meta( $post->ID, 'gallery_data', true );
+	?>
+	<div id="gallery_wrapper">
+		<div id="img_box_container">
+		<?php 
+		if ( isset( $gallery_data['image_url'] ) ){
+			for( $i = 0; $i < count( $gallery_data['image_url'] ); $i++ ){
+			?>
+			<div class="gallery_single_row dolu">
+			  <div class="gallery_area image_container ">
+				<!-- <img class="gallery_img_img" src="<?php esc_html_e( $gallery_data['image_url'][$i] ); ?>" height="55" width="55" onclick="open_media_uploader_image_this(this)"/> -->
+                <img class="gallery_img_img" src="<?php esc_html_e( $gallery_data['image_url'][$i] ); ?>" height="55" width="55" />
+				<input type="hidden"
+						 class="meta_image_url"
+						 name="gallery[image_url][]"
+						 value="<?php esc_html_e( $gallery_data['image_url'][$i] ); ?>"
+				  />
+			  </div>
+			  <div class="gallery_area">
+                <!-- <span class="button remove" onclick="remove_img(this)" title="Remove"><i class="fas fa-trash-alt"></i></span> -->
+				<span class="button remove" title="Remove"><i class="fas fa-trash-alt"></i></span>
+			  </div>
+			  <div class="clear">
+			</div> 
+			</div>
+			<?php
+			}
+		}
+		?>
+		</div>
+		<div style="display:none" id="master_box">
+			<div class="gallery_single_row">
+				<div class="gallery_area image_container" onclick="open_media_uploader_image(this)">
+					<input class="meta_image_url" value="" type="hidden" name="gallery[image_url][]" />
+				</div> 
+				<div class="gallery_area"> 
+					<!-- <span class="button remove" onclick="remove_img(this)" title="Remove"><i class="fas fa-trash-alt"></i></span> -->
+                    <span class="button remove" title="Remove"><i class="fas fa-trash-alt"></i></span>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div id="add_gallery_single_row">
+        <!-- <input class="button add" type="button" value="+" onclick="open_media_uploader_image_plus();" title="Add image"/> -->
+		  <input class="button add" id="listing_add_gallery_image" type="button" value="+" title="Add image"/>
+		</div>
+	</div>
+	<?php
 }
 
 
@@ -323,34 +368,6 @@ function boostly_api_sync_listings_ajax(){
     die(1);
 }
 
-add_action( 'wp_ajax_nopriv_boostly_api_delete_listings_ajax', 'boostly_api_delete_listings_ajax' );
-add_action( 'wp_ajax_boostly_api_delete_listings_ajax', 'boostly_api_delete_listings_ajax' );
-function boostly_api_delete_listings_ajax(){
-    $listing_posts= get_posts( array('post_type'=>'listing','numberposts'=>-1) );
-    foreach ($listing_posts as $listing_post) {
-        $img_id = get_post_thumbnail_id($listing_post->ID);
-        wp_delete_attachment($img_id);
-        wp_delete_post( $listing_post->ID, true );
-        $taxonomies = get_taxonomies(['object_type' => ['listing']]);
-        foreach ( $taxonomies as $name ) {
-            delete_all_terms($name);
-        }
-    }
-    
-}
-if( !function_exists( 'delete_all_terms' ) ) {
-    function delete_all_terms($taxonomy_name){
-        $terms = get_terms( array(
-            'taxonomy' => $taxonomy_name,
-            'hide_empty' => false
-        ) );
-        foreach ( $terms as $term ) {
-            wp_delete_term($term->term_id, $taxonomy_name); 
-        }        
-    }
-}
-
-
 if( !function_exists( 'boostly_api_add_listing' ) ) {
     function boostly_api_add_listing($listing_data){
         
@@ -403,21 +420,44 @@ if( !function_exists( 'boostly_api_add_listing' ) ) {
             $attachment_id = boostly_images_upload($listing_data['feature_image']);
             set_post_thumbnail($post_id, $attachment_id);
         }
+        
         if ($listing_data['galllery_images']) {
-            $listing_gallery = get_post_meta(get_the_ID(), 'listing_gallery', true);
-            $gallery = $listing_data['galllery_images'];
+            $gallery = str_replace(",,", ",", $listing_data['galllery_images']);
             $gallery_array = explode(',', $listing_data['galllery_images']);
+            $listing_gallery = get_post_meta($post_id, 'listing_gallery', true);
             foreach ($gallery_array as $key => $image) {
+                // var_dump($image);
+                $listing_gallery = get_post_meta($post_id, 'listing_gallery', true);
+                $attachment_id;
+                // Check if the url isn't 404
+                // Initializing new session
+                $ch = curl_init($image);
+                // Request method is set
+                curl_setopt($ch, CURLOPT_NOBODY, true);
                 
-                // $attachment_id = boostly_images_upload($image);
-                var_dump($image);
-                if(!$listing_gallery){
-                    // update_post_meta($post_id, 'listing_gallery',$listing_gallery.", ".$attachment_id );
-                } else{
-                    // update_post_meta($post_id, 'listing_gallery', $attachment_id );
+                // Executing cURL session
+                curl_exec($ch);
+                
+                // Getting information about HTTP Code
+                $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                // Testing for 404 Error
+                if($retcode == 200) {
+                    $attachment_id = boostly_images_upload($image);
                 }
-            }       
-           
+
+                // if(!$listing_gallery){
+                if($attachment_id){
+                    update_post_meta($post_id, 'listing_gallery',$listing_gallery.", ".$attachment_id );
+                }
+                
+                // } else{
+                //     update_post_meta($post_id, 'listing_gallery', $attachment_id );
+                // }
+                // break;
+            }     
+            $listing_gallery_trim = substr(get_post_meta($post_id, 'listing_gallery', true), 2);
+            $listing_gallery_trim = str_replace(", , ", ", ",$listing_gallery_trim);
+            update_post_meta($post_id, 'listing_gallery', $listing_gallery_trim );
         }
         
 
@@ -454,7 +494,42 @@ if( !function_exists( 'boostly_api_add_listing' ) ) {
     }
 }
 
+add_action( 'wp_ajax_nopriv_boostly_api_delete_listings_ajax', 'boostly_api_delete_listings_ajax' );
+add_action( 'wp_ajax_boostly_api_delete_listings_ajax', 'boostly_api_delete_listings_ajax' );
+function boostly_api_delete_listings_ajax(){
+    $listing_posts= get_posts( array('post_type'=>'listing','numberposts'=>-1) );
+    foreach ($listing_posts as $listing_post) {
+        $img_id = get_post_thumbnail_id($listing_post->ID);
+        wp_delete_attachment($img_id);
 
+        $listing_gallery = get_post_meta($listing_post->ID, 'listing_gallery', true);
+        $listing_gallery_images = explode(', ', $listing_gallery);
+        if($listing_gallery){
+            foreach ($listing_gallery_images as $image_id){
+                wp_delete_attachment($image_id);
+            }
+        }
+
+        wp_delete_post( $listing_post->ID, true );
+
+        $taxonomies = get_taxonomies(['object_type' => ['listing']]);
+        foreach ( $taxonomies as $name ) {
+            delete_all_terms($name);
+        }
+    }
+    
+}
+if( !function_exists( 'delete_all_terms' ) ) {
+    function delete_all_terms($taxonomy_name){
+        $terms = get_terms( array(
+            'taxonomy' => $taxonomy_name,
+            'hide_empty' => false
+        ) );
+        foreach ( $terms as $term ) {
+            wp_delete_term($term->term_id, $taxonomy_name); 
+        }        
+    }
+}
 
 // add_action('init', 'boostly_images_upload', 0);
 if( !function_exists( 'boostly_images_upload' ) ) {
@@ -462,32 +537,39 @@ if( !function_exists( 'boostly_images_upload' ) ) {
         include_once( ABSPATH . 'wp-admin/includes/image.php' );
 
         // $imageurl = "https://a0.muscache.com/im/pictures/miso/Hosting-33996825/original/082485ca-b801-4f51-87aa-84e682871df9.jpeg?im_w=1200";
-        $imagetype = end(explode('/', getimagesize($imageurl)['mime']));
-        $uniq_name = date('dmY').''.(int) microtime(true); 
-        $filename = $uniq_name.'.'.$imagetype;
+        if($imageurl){
+            $imagetype = end(explode('/', getimagesize($imageurl)['mime']));
+            $uniq_name = date('dmY').''.(int) microtime(true); 
+            $filename = $uniq_name.'.'.$imagetype;
+            if($filename){
+                $uploaddir = wp_upload_dir();
+                $uploadfile = $uploaddir['path'] . '/' . $filename;
+                $contents= file_get_contents($imageurl);
+                $savefile = fopen($uploadfile, 'w');
+                fwrite($savefile, $contents);
+                fclose($savefile);
+                $wp_filetype = wp_check_filetype(basename($filename), null );
+                if($wp_filetype){
+                    $attachment = array(
+                        'post_mime_type' => $wp_filetype['type'],
+                        'post_title' => $filename,
+                        'post_content' => '',
+                        'post_status' => 'inherit'
+                    );
+                    if($attachment && $uploadfile ){
+                        $attach_id = wp_insert_attachment( $attachment, $uploadfile );
+                        $imagenew = get_post( $attach_id );
+                        $fullsizepath = get_attached_file( $imagenew->ID );
+                        $attach_data = wp_generate_attachment_metadata( $attach_id, $fullsizepath );
+                        wp_update_attachment_metadata( $attach_id, $attach_data ); 
+            
+                        return $attach_id;
+                    }
 
-        $uploaddir = wp_upload_dir();
-        $uploadfile = $uploaddir['path'] . '/' . $filename;
-        $contents= file_get_contents($imageurl);
-        $savefile = fopen($uploadfile, 'w');
-        fwrite($savefile, $contents);
-        fclose($savefile);
-
-        $wp_filetype = wp_check_filetype(basename($filename), null );
-        $attachment = array(
-            'post_mime_type' => $wp_filetype['type'],
-            'post_title' => $filename,
-            'post_content' => '',
-            'post_status' => 'inherit'
-        );
-
-        $attach_id = wp_insert_attachment( $attachment, $uploadfile );
-        $imagenew = get_post( $attach_id );
-        $fullsizepath = get_attached_file( $imagenew->ID );
-        $attach_data = wp_generate_attachment_metadata( $attach_id, $fullsizepath );
-        wp_update_attachment_metadata( $attach_id, $attach_data ); 
-
-        return $attach_id;
+                }
+            }
+        }
+        return;
     }
 }
 

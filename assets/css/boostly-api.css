@@ -46,121 +46,182 @@
 .listng-fields.column-3{
     width: 32%;
 }
-/*#single-listing{
-    padding: 50px 20px;
-}
-.featured-image img{
-    height: 700px;
-    width: 100%;
-    object-fit: cover;
-}
-.gallery-container{
-    margin-top: 20px;
-}
-.gallery-container img{
-    height: 150px;
-    width: 100%;
-    object-fit: cover;
-}
 
-.details-container{
-    margin-top: 50px;
+/* Gallery Field */
+.gallery_area {
+    float:right;
 }
-hr{
-    margin: 30px auto;
+.image_container {
+    float:left!important;
+    width: 100px;
+    background: url('https://i.hizliresim.com/dOJ6qL.png');
+    height: 100px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 3px;
+    cursor: pointer;
 }
-.propert-details-wrapper h4{
+.image_container img{
+    height: 100px;
+    width: 100px;
+    border-radius: 3px;
+}
+.clear {
+    clear:both;
+}
+#gallery_wrapper {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: inline-block;
+}
+#gallery_wrapper input[type=text] {
+    width:300px;
+}
+#gallery_wrapper .gallery_single_row {
+    float: left;
+    display:inline-block;
+    width: 100px;
+    position: relative;
+    margin-right: 8px;
     margin-bottom: 20px;
 }
-.propert-details-wrapper .wrapper{
-    padding: 15px 0;
-    border-bottom: 1px solid #ccc;
+.dolu {
+    display: inline-block!important;
 }
-.propert-details-wrapper i{
-    font-size: 21px;
+#gallery_wrapper label {
+    padding:0 6px;
 }
-.propert-details-wrapper .icon-wrapper{
-    display: inline-block;
-    margin-right: 20px;
-    width: 25px;
+.button.remove {
+    background: none;
+    color: #f1f1f1;
+    position: absolute;
+    border: none;
+    top: 4px;
+    right: 7px;
+    font-size: 1.2em;
+    padding: 0px;
+    box-shadow: none;
 }
-.propert-details-wrapper .content-wrapper{
-    display: inline-block;
-    width: calc(100% - 51px);
+.button.remove:hover {
+    background: none;
+    color: #fff;
 }
-.propert-details-wrapper span.value,
-.propert-details-wrapper span.label{
-    font-size: 18px;
+.button.add {
+    background: #c3c2c2;
+    color: #ffffff;
+    border: none;
+    box-shadow: none;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 4em;
 }
-
-.details-container .section-wrapper{
-    margin-top: 40px;
+.button.add:hover, .button.add:focus {
+    background: #e2e2e2;
+    box-shadow: none;
+    color: #0f88c1;
+    border: none;
 }
-
-.details-container .title-wrapper{
-    margin-top: 0;
-}
-
-.form-wrapper{
-    padding: 40px;
-    background-color: #f1f1f1;
-    border-bottom: 2px solid #ccc;
-}
-
-.form-wrapper form input,
-.form-wrapper form textarea{
-    display: block;
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 10px;
-}*/
-
-/*Search Result*/
-/*.listing-search-form{
+/* Gallery Field End */
+/* Calendar */
+.calendar-wrapper{
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    /* min-height: 100vh; */
+    flex-direction: column;
+    max-width: 500px;
+    margin: 20px auto;
     padding: 20px;
-}
-
-.listing-search-form select.selectpicker{
-    display:  none;
-}
-
-.listing-search-form .form-field button.btn.dropdown-toggle span.bs-caret{
-    display:  none;
-}
-
-.listing-search-form .form-field:not(:last-child){
-    margin-right: 20px;
-}*/
-
-
-/*Listing Item Card*/
-
-/*.listing-wrapper{
-    border-top: 1px solid #ccc;
-}
-
-.listing-item .image-wrapper img{
-    width: 100%;
-    max-width: 100%;
-    height: 300px;
+    box-shadow: 1px 0 10px #ccc;
     border-radius: 10px;
-    object-fit: cover;
 }
-
-.listing-item .listing-info-wrapper:not(:last-child){
-    margin-right: 15px;
-}
-
-.listing-item h3.listing_title{
+.calendar-wrapper .calendar-header{
+    display: flex;
+    align-items: center;
+    padding: 25px 30px 10px;
+    justify-content: space-between;
     width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 88%;
+}
+.calendar-header .current-date{
+    font-size: 24px;
+    font-weight: 700;
 }
 
-.listing-wrapper .listing-column{
-    margin-bottom: 30px;
-}*/
+.calendar-header .icons span{
+    height: 38px;
+    width: 38px;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 50px;
+    color: #ccc;
+    font-size: 24px;
+}
+.calendar-header .icons span:hover{
+    background-color: #fff;
+}
+.calendar-header .icons span:last-child{
+    margin-right: -10px;
+}
+
+.calendar-wrapper ul{
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+}
+.calendar-wrapper ul li{
+    position: relative;
+    width: calc( 100% / 7);
+    text-align: center;
+}
+
+.calendar-wrapper .days{
+    margin-bottom: 20px;
+}
+
+.calendar-wrapper .days li{
+    margin-bottom: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    z-index: 1;
+}
+
+.calendar-wrapper .weeks li{
+    font-weight: 500;
+}
+
+.calendar-wrapper .days li.inactive{
+    color: #aaa;
+}
+
+.calendar-wrapper .days li.inactive:hover::before{
+    background-color: transparent;
+}
+
+.calendar-wrapper .days li.active{
+    color: #fff;
+}
+.calendar-wrapper .days li.active:hover::before,
+.calendar-wrapper .days li.active::before{
+    background-color: #000;
+}
+
+.calendar-wrapper .days li:before{
+    position: absolute;
+    content: "";
+    height: 40px;
+    width: 40px;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);   
+}
+
+.calendar-wrapper .days li:hover::before{
+    background-color: #f2f2f2;
+}
+
+

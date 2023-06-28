@@ -129,100 +129,118 @@
             });
             
 
-            
-
-            // Availability Calendar
-            availability_calendar();
+        
+            // Date Picker
+            daterange_picker();
         });
         
-        // Availability Calendar Metabox
-        function availability_calendar(){
-            const currentDate = document.querySelector(".current-date");
-            daysTag = document.querySelector(".days");
-
-            // getting new date, current year and month
-            let date = new Date(),
-            currentYear = date.getFullYear(),
-            currentMonth = date.getMonth();
-
-            console.log(date, currentYear, currentMonth);
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-            const renderCalendar = () => {
-                let lastDateofMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); //getting last date of month
-                let liTag = "";
-                for(let i = 1; i <= lastDateofMonth; i++){
-                    liTag += `<li>${i}</li>`;
-                }
-                currentDate.innerText = `${months[currentMonth]} ${currentYear}`;
-                daysTag.innerHTML = liTag; 
-            }
-            renderCalendar();
-        }
     });
-    // Availability Calendar Metabox End
+    // Function for Daterange Picker
+    function daterange_picker(){
+        if($('#arrive_date_picker, #depart_date_picker').length){
+            // check if element is available to bind ITS ONLY ON HOMEPAGE
+            var currentDate = moment().format("DD-MM-YYYY");
+        
+            $('#arrive_date_picker, #depart_date_picker').daterangepicker({
+                locale: {
+                      format: 'DD-MM-YYYY',
+                      daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat'],
+                      firstDay: 1,
+                      monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                      firstDay: 7
+                },
+                firstDayOfWeek: 1,
+                "alwaysShowCalendars": true,
+                "minDate": currentDate,
+                autoApply: true,
+                autoUpdateInput: false,
+            //    ranges: {
+            //        'Today': [moment(), moment()],
+            //        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            //        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            //        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            //        'This Month': [moment().startOf('month'), moment().endOf('month')],
+            //        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            //     }
+              
+            }, function(start, end, label) {
+              // console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+              // Lets update the fields manually this event fires on selection of range
+              var selectedStartDate = start.format('DD-MM-YYYY'); // selected start
+              var selectedEndDate = end.format('DD-MM-YYYY'); // selected end
+              
+              $checkinInput = $('#arrive_date_picker');
+              $checkoutInput = $('#depart_date_picker');
+        
+              // Updating Fields with selected dates
+              $checkinInput.val(selectedStartDate);
+              $checkoutInput.val(selectedEndDate);
+        
+              // Setting the Selection of dates on calender on CHECKOUT FIELD (To get this it must be binded by Ids not Calss)
+              var checkOutPicker = $checkoutInput.data('daterangepicker');
+              checkOutPicker.setStartDate(selectedStartDate);
+              checkOutPicker.setEndDate(selectedEndDate);
 
-    // Listing Gallery Field
-    function remove_img(value) {
-        var parent=jQuery(value).parent().parent();
-        parent.remove();
-    }
-    var media_uploader = null;
-    function open_media_uploader_image(obj){
-        media_uploader = wp.media({
-            frame:    "post", 
-            state:    "insert", 
-            multiple: false
-        });
-        media_uploader.on("insert", function(){
-            var json = media_uploader.state().get("selection").first().toJSON();
-            var image_url = json.url;
-            var html = '<img class="gallery_img_img" src="'+image_url+'" height="55" width="55" onclick="open_media_uploader_image_this(this)"/>';
-            console.log(image_url);
-            jQuery(obj).append(html);
-            jQuery(obj).find('.meta_image_url').val(image_url);
-        });
-        media_uploader.open();
-    }
-    function open_media_uploader_image_this(obj){
-        media_uploader = wp.media({
-            frame:    "post", 
-            state:    "insert", 
-            multiple: false
-        });
-        media_uploader.on("insert", function(){
-            var json = media_uploader.state().get("selection").first().toJSON();
-            var image_url = json.url;
-            console.log(image_url);
-            jQuery(obj).attr('src',image_url);
-            jQuery(obj).siblings('.meta_image_url').val(image_url);
-        });
-        media_uploader.open();
+              // Setting the Selection of dates on calender on CHECKIN FIELD (To get this it must be binded by Ids not Calss)
+              var checkInPicker = $checkinInput.data('daterangepicker');
+              checkInPicker.setStartDate(selectedStartDate);
+              checkInPicker.setEndDate(selectedEndDate);
+
+              
+              
+
+                var not_available_dates = $('#listing-availability #not_available_dates').val();
+                var merge_dates_array = getRangeOfDates(selectedStartDate, selectedEndDate); 
+                // console.log(merge_dates_array);
+                if(not_available_dates){
+                    not_available_dates = not_available_dates.split(', ');
+                    var merge_dates_array = $.merge( not_available_dates, merge_dates_array );
+                }
+                //remove empty value
+                merge_dates_array = merge_dates_array.filter(function(v){return v!==''}); 
+                merge_dates_array = removeDuplicates(merge_dates_array);
+                merge_dates_array = merge_dates_array.sort();
+
+                merge_dates_array = merge_dates_array.join(', ');
+
+                $('#listing-availability #not_available_dates').val(merge_dates_array);
+            });
+        
+        } // End Daterange Picker
+
+        // Get Remove Duplicates Array
+        function removeDuplicates(data){
+            return	data.filter((value, index) => data.indexOf(value) === index);
+        }
+        // Get Remove Duplicates Array End 
+
+        // Get Range Of Dates Array
+        function getRangeOfDates(startDate, endDate) {
+            // console.log(startDate+" - "+endDate);
+            const getDatesDiff = (start_date, end_date, date_format = "DD-MM-YYYY") => {
+                const getDateAsArray = date => {
+                    return moment(date.split(/\D+/), date_format);
+                };
+                const diff = getDateAsArray(end_date).diff(getDateAsArray(start_date).add(1, 'day'), "days") + 1;
+                // const diff = getDateAsArray(end_date).diff(getDateAsArray(start_date), "days") + 1;
+                const dates = [];
+                dates.push(start_date);
+                dates.push(end_date);
+                for (let i = 1; i < diff; i++) {
+                    const nextDate = getDateAsArray(start_date).add(i, "day");
+                    const isWeekEndDay = nextDate.isoWeekday() > 7;
+
+                    if (!isWeekEndDay)
+                    dates.push(nextDate.format(date_format))
+                }
+                return dates;
+            };
+
+            const dates_array = getDatesDiff(startDate, endDate);
+            return dates_array;
+            
+        }
+        // Get Range Of Dates Array End
     }
 
-    function open_media_uploader_image_plus(){
-        media_uploader = wp.media({
-            frame:    "post", 
-            state:    "insert", 
-            multiple: true 
-        });
-        media_uploader.on("insert", function(){
-
-            var length = media_uploader.state().get("selection").length;
-            var images = media_uploader.state().get("selection").models
-
-            for(var i = 0; i < length; i++){
-                var image_url = images[i].changed.url;
-                var box = jQuery('#master_box').html();
-                jQuery(box).appendTo('#img_box_container');
-                var element = jQuery('#img_box_container .gallery_single_row:last-child').find('.image_container');
-                var html = '<img class="gallery_img_img" src="'+image_url+'" height="55" width="55"/>';
-                element.append(html);
-                element.find('.meta_image_url').val(image_url);
-                console.log(image_url);		
-            }
-        });
-        media_uploader.open();
-    }
-    // Listing Gallery Field End
 }(jQuery, this, document);

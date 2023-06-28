@@ -202,6 +202,10 @@ function save_meta_box_data($post_id) {
         'listing_guests',
         'listing_beds',
         'listing_baths',
+        'listing_cleaning_fee',
+        'listing_security_deposit',
+        'listing_service_fee',
+        'listing_tax',
         'listing_price',
         'listing_currency',
         'listing_address',
@@ -209,6 +213,7 @@ function save_meta_box_data($post_id) {
         'listing_longitude',
         'listing_id',
         'listing_gallery',
+        'not_available_dates',
     ];
         // update_post_meta($post_id, 'boostly_geolocation_long', $long);
     foreach ($field_list as $fieldName) {

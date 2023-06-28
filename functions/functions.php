@@ -7,9 +7,15 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
         $listing_type         = wp_get_object_terms( $post_id, 'listing_type', array( 'fields' => 'names' ) );
         $listing_type = implode(", ", $listing_type);
         $listing_price       = get_post_meta($post_id, 'listing_price', true);
+        $listing_dates_not_available       = get_post_meta($post_id, 'not_available_dates', true);
+
+
+
         ?>
         
-        <div class="calendar-wrapper">
+
+
+        <div class="calendar-wrapper" style="display: none;";>
             <div class="header calendar-header">
                 <p class="current-date">May 2022</p>
                 <div class="icons">
@@ -63,7 +69,23 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
                 </ul>
             </div>
         </div>
+        <div class="form-listing-details">
+            <div class="form-listing-details-row">
 
+                    <div class="listng-fields column-2">
+                        <label for="listing_guest">Arrive</label>
+                        <div class="input-group">
+                            <input class="form-control" id="arrive_date_picker" name="arrive_date_picker" placeholder="Arrive Date">
+                            <input class="form-control" id="depart_date_picker" name="depart_date_picker" placeholder="Depart Date">
+                        </div>
+                    </div>
+                    <div class="listng-fields">
+                        <label for="listing_guest">Availability</label>
+                        <input type="text" name="not_available_dates" id="not_available_dates" value="<?= esc_attr( get_post_meta(get_the_ID(), 'not_available_dates', true) ) ?>">
+                    </div>
+               </div>
+            </div>
+        </div>
         <table width="100%" class="display" style="text-align: left;">
             <tbody>
                 <tr>
@@ -204,6 +226,28 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
             </div>
 
             <div class="form-listing-details-row">
+               <div class="listng-fields column-2">
+                   <label for="listing_guest">Cleaning Fee (<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>)</label>
+                   <input type="text" name="listing_cleaning_fee" id="listing_cleaning_fee" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_cleaning_fee', true) ) ?>">
+               </div>
+
+               <div class="listng-fields column-2">
+                   <label for="listing_beds">Security Deposit (<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>)</label>
+                   <input type="text" name="listing_security_deposit" id="listing_security_deposit" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_security_deposit', true) ) ?>">
+               </div>
+
+               <div class="listng-fields column-2">
+                   <label for="listing_baths">Service Fees (<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>)</label>
+                   <input type="text" name="listing_service_fee" id="listing_service_fee" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_service_fee', true) ) ?>">
+               </div>
+
+               <div class="listng-fields column-2">
+                   <label for="listing_baths">Taxes %</label>
+                   <input type="number" min='0' max='100' name="listing_tax" id="listing_tax" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_tax', true) ) ?>">
+               </div>
+            </div>
+
+            <div class="form-listing-details-row">
                 <div class="listng-fields column-3">
                     <label for="listing_id">Listing ID</label>
                     <input type="text" name="listing_id" id="listing_id" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_id', true) ) ?>">
@@ -220,7 +264,6 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                 </div>
 
             </div>
-
 
             <div class="form-listing-details-row">
                 <div class="listng-fields">
@@ -251,9 +294,6 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                     <button id="listing_add_image_gallery">Upload Images</button>
                 </div>
                 <?php //property_gallery_metabox_callback(); ?>
-            </div>
-
-            <div>
             </div>
         </div>
         <?php

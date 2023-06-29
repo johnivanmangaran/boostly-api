@@ -225,3 +225,20 @@
 }
 
 
+.daterangepicker td.available{
+    background-color: #e4f4d9; 
+    color: #000;
+    font-weight: 700;
+    border-radius: 0 !important;
+}
+.daterangepicker td.disabled{
+    cursor: none;
+}
+.daterangepicker td.off.ends{
+    opacity: 0;
+    cursor: none;
+    line-height: 0;
+    font-size: 0;
+    padding: 0;
+    height: 0;
+}

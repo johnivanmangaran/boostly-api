@@ -139,13 +139,12 @@
     function daterange_picker(){
         if($('#arrive_date_picker, #depart_date_picker').length){
             // check if element is available to bind ITS ONLY ON HOMEPAGE
-            var currentDate = moment().format("DD-MM-YYYY");
+            var currentDate = moment().format("MM-DD-YYYY");
         
             $('#arrive_date_picker, #depart_date_picker').daterangepicker({
                 locale: {
-                      format: 'DD-MM-YYYY',
+                      format: 'MM-DD-YYYY',
                       daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat'],
-                      firstDay: 1,
                       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                       firstDay: 7
                 },
@@ -154,20 +153,39 @@
                 "minDate": currentDate,
                 autoApply: true,
                 autoUpdateInput: false,
-            //    ranges: {
-            //        'Today': [moment(), moment()],
-            //        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            //        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            //        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            //        'This Month': [moment().startOf('month'), moment().endOf('month')],
-            //        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            //     }
+                // datesDisabled: ["30-06-2023", "01-07-2023"],
+                // isInvalidDate: function(date){
+                //     var disabled = false;
+                //     $.each(listing_dates_not_available, function(key, value) {
+                //         var cal_date = date.format('MM-DD-YYYY');
+                //         if(cal_date == value){
+                //             disabled = true;
+                //             return false; 
+                //         }
+                //     });
+                //     if(disabled){
+                //         return true;
+                //     }
+                // },
+                // isCustomDate: function(date){
+                //     var disabled = false;
+                //     $.each(listing_dates_not_available, function(key, value) {
+                //         var cal_date = date.format('MM-DD-YYYY');
+                //         if(cal_date == value){
+                //             disabled = true;
+                //             return false; 
+                //         }
+                //     });
+                //     if(disabled){
+                //         return 'not-available';
+                //     }
+                // }
               
             }, function(start, end, label) {
               // console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
               // Lets update the fields manually this event fires on selection of range
-              var selectedStartDate = start.format('DD-MM-YYYY'); // selected start
-              var selectedEndDate = end.format('DD-MM-YYYY'); // selected end
+              var selectedStartDate = start.format('MM-DD-YYYY'); // selected start
+              var selectedEndDate = end.format('MM-DD-YYYY'); // selected end
               
               $checkinInput = $('#arrive_date_picker');
               $checkoutInput = $('#depart_date_picker');
@@ -199,6 +217,7 @@
                 //remove empty value
                 merge_dates_array = merge_dates_array.filter(function(v){return v!==''}); 
                 merge_dates_array = removeDuplicates(merge_dates_array);
+                
                 merge_dates_array = merge_dates_array.sort();
 
                 merge_dates_array = merge_dates_array.join(', ');
@@ -207,6 +226,17 @@
             });
         
         } // End Daterange Picker
+
+        // 
+        // function sort_date($a, $b){
+        //     $a = date('Y-m-d', strtotime($a));
+        //     $b = date('Y-m-d', strtotime($b));
+
+        //     if ($a == $b) {
+        //         return 0;
+        //     }
+        //     return ($a < $b) ? -1 : 1;
+        // }
 
         // Get Remove Duplicates Array
         function removeDuplicates(data){
@@ -217,7 +247,7 @@
         // Get Range Of Dates Array
         function getRangeOfDates(startDate, endDate) {
             // console.log(startDate+" - "+endDate);
-            const getDatesDiff = (start_date, end_date, date_format = "DD-MM-YYYY") => {
+            const getDatesDiff = (start_date, end_date, date_format = "MM-DD-YYYY") => {
                 const getDateAsArray = date => {
                     return moment(date.split(/\D+/), date_format);
                 };
@@ -225,7 +255,7 @@
                 // const diff = getDateAsArray(end_date).diff(getDateAsArray(start_date), "days") + 1;
                 const dates = [];
                 dates.push(start_date);
-                dates.push(end_date);
+                
                 for (let i = 1; i < diff; i++) {
                     const nextDate = getDateAsArray(start_date).add(i, "day");
                     const isWeekEndDay = nextDate.isoWeekday() > 7;
@@ -233,6 +263,7 @@
                     if (!isWeekEndDay)
                     dates.push(nextDate.format(date_format))
                 }
+                dates.push(end_date);
                 return dates;
             };
 

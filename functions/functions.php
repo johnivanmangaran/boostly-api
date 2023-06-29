@@ -7,13 +7,11 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
         $listing_type         = wp_get_object_terms( $post_id, 'listing_type', array( 'fields' => 'names' ) );
         $listing_type = implode(", ", $listing_type);
         $listing_price       = get_post_meta($post_id, 'listing_price', true);
-        $listing_dates_not_available       = get_post_meta($post_id, 'not_available_dates', true);
-
+        $listing_dates_not_available = get_post_meta($post_id, 'not_available_dates', true);
+        $listing_dates_not_available = json_encode(explode(", ", $listing_dates_not_available));
 
 
         ?>
-        
-
 
         <div class="calendar-wrapper" style="display: none;";>
             <div class="header calendar-header">
@@ -94,7 +92,7 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
                 </tr>
                 <tr>
                     <th style="border: 1px solid lightgray;padding: 10px;width: 20%;">Booked Dates</th>
-                    <td style="border: 1px solid lightgray;padding: 10px;width: 80%;"><?php //echo $listing_type ?></td>
+                    <td style="border: 1px solid lightgray;padding: 10px;width: 80%;"><?php echo $listing_dates_not_available ?></td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid lightgray;padding: 10px;width: 50%;">Available Dates</th>

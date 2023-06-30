@@ -1,4 +1,12 @@
+#wpfooter{
+    position: unset;
+}
 
+.div.mce-inline-toolbar-grp{
+    position: fixed;
+    width: 100%;
+    max-width: 100%;
+}
 .media.table-view-list {
     display:  inline-table;
     /* align-items: flex-start; */
@@ -19,10 +27,15 @@
     object-fit: cover;
 }
 
+.form-details-row h3{
+    width: 100%;
+}
+
+.form-details,
 .form-listing-details{
     margin-top:  20px;
 }
-
+.form-details-row,
 .form-listing-details-row{
     width:  100%;
     display:  flex;
@@ -32,20 +45,31 @@
     margin-top: 20px;
 }
 
+.form-details-row:first-child,
 .form-listing-details-row:first-child{
     margin-top: 0;
 }
 
-.listng-fields,
-.listng-fields > input{
+.form-fields,
+.form-fields > input,
+.listing-fields,
+.listing-fields > input{
     width: 100%;
 }
-.listng-fields.column-2{
+.form-fields.column-2,
+.listing-fields.column-2{
     width: 49%;
 }
-.listng-fields.column-3{
+.form-fields.column-3,
+.listing-fields.column-3{
     width: 32%;
 }
+
+.form-fields.column-6,
+.listing-fields.column-6{
+    width: 49%;
+}
+
 
 /* Gallery Field */
 .gallery_area {

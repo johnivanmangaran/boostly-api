@@ -139,11 +139,11 @@
     function daterange_picker(){
         if($('#arrive_date_picker, #depart_date_picker').length){
             // check if element is available to bind ITS ONLY ON HOMEPAGE
-            var currentDate = moment().format("MM-DD-YYYY");
+            var currentDate = moment().format("YYYY-MM-DD");
         
             $('#arrive_date_picker, #depart_date_picker').daterangepicker({
                 locale: {
-                      format: 'MM-DD-YYYY',
+                      format: 'YYYY-MM-DD',
                       daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri','Sat'],
                       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                       firstDay: 7
@@ -157,7 +157,7 @@
                 // isInvalidDate: function(date){
                 //     var disabled = false;
                 //     $.each(listing_dates_not_available, function(key, value) {
-                //         var cal_date = date.format('MM-DD-YYYY');
+                //         var cal_date = date.format('YYYY-MM-DD');
                 //         if(cal_date == value){
                 //             disabled = true;
                 //             return false; 
@@ -170,7 +170,7 @@
                 // isCustomDate: function(date){
                 //     var disabled = false;
                 //     $.each(listing_dates_not_available, function(key, value) {
-                //         var cal_date = date.format('MM-DD-YYYY');
+                //         var cal_date = date.format('YYYY-MM-DD');
                 //         if(cal_date == value){
                 //             disabled = true;
                 //             return false; 
@@ -184,8 +184,8 @@
             }, function(start, end, label) {
               // console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
               // Lets update the fields manually this event fires on selection of range
-              var selectedStartDate = start.format('MM-DD-YYYY'); // selected start
-              var selectedEndDate = end.format('MM-DD-YYYY'); // selected end
+              var selectedStartDate = start.format('YYYY-MM-DD'); // selected start
+              var selectedEndDate = end.format('YYYY-MM-DD'); // selected end
               
               $checkinInput = $('#arrive_date_picker');
               $checkoutInput = $('#depart_date_picker');
@@ -247,7 +247,7 @@
         // Get Range Of Dates Array
         function getRangeOfDates(startDate, endDate) {
             // console.log(startDate+" - "+endDate);
-            const getDatesDiff = (start_date, end_date, date_format = "MM-DD-YYYY") => {
+            const getDatesDiff = (start_date, end_date, date_format = "YYYY-MM-DD") => {
                 const getDateAsArray = date => {
                     return moment(date.split(/\D+/), date_format);
                 };

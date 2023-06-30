@@ -30,8 +30,6 @@ function create_listing_cpt() {
         'parent_item_colon' => ''
       );
 
-    $labels = apply_filters( 'homey_listing_post_type_labels', $labels );
-
     $args = array(
         'labels' => $labels,
         'public' => true,
@@ -50,9 +48,43 @@ function create_listing_cpt() {
         'supports' => array('title','editor','thumbnail','revisions','author','page-attributes','excerpt'),
     );
 
-    $args = apply_filters( 'homey_listing_post_type_args', $args );
-
     register_post_type('listing',$args);
+
+// Reservations
+
+    $reservations_labels = array(
+        'name' => esc_html__( 'Reservations','boostly-api-training'),
+        'singular_name' => esc_html__( 'Reservation','boostly-api-training' ),
+        'add_new' => esc_html__('Add New','boostly-api-training'),
+        'add_new_item' => esc_html__('Add New','boostly-api-training'),
+        'edit_item' => esc_html__('Edit Reservation','boostly-api-training'),
+        'new_item' => esc_html__('New Reservation','boostly-api-training'),
+        'view_item' => esc_html__('View Reservation','boostly-api-training'),
+        'search_items' => esc_html__('Search Reservation','boostly-api-training'),
+        'not_found' =>  esc_html__('No Reservation found','boostly-api-training'),
+        'not_found_in_trash' => esc_html__('No Reservation found in Trash','boostly-api-training'),
+        'parent_item_colon' => ''
+      );
+
+    $reservations_args = array(
+        'labels' => $reservations_labels,
+        'public' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
+        'query_var' => true,
+        'has_archive' => true,
+        'capability_type' => 'post',
+        'map_meta_cap'    => true,
+        'hierarchical' => true,
+        'menu_icon' => 'dashicons-calendar-alt',
+        'menu_position' => 20,
+        'can_export' => true,
+        'custom-fields' => true,
+        'show_in_rest'       => true,
+        'supports' => array('title','revisions','author','page-attributes'),
+    );
+
+    register_post_type('reservations',$reservations_args);
 }
 
 //Custom Listing Post Type End
@@ -184,7 +216,8 @@ function boostly_listing_meta_boxes() {
     add_meta_box('listing-details', 'Listing Details', 'boostly_api_custom_fields', 'listing');
     add_meta_box('listing-meta', 'Listing Data', 'boostly_api_meta_box_data', 'listing');
     add_meta_box('listing-availability', 'Availability', 'boostly_api_metabox_availability', 'listing');
-    
+    //Reservations
+    add_meta_box('reservation-details', 'Reservation Details', 'boostly_api_metabox_reservation_details', 'reservations');
 }
 //Custom Listing Meta Boxes End
 
@@ -200,6 +233,8 @@ function save_meta_box_data($post_id) {
 
     $field_list = [
         'listing_guests',
+        'listing_extra_guest_allowed',
+        'listing_extra_guest_fee',
         'listing_beds',
         'listing_baths',
         'listing_cleaning_fee',
@@ -214,8 +249,20 @@ function save_meta_box_data($post_id) {
         'listing_id',
         'listing_gallery',
         'not_available_dates',
+        'reserv_status',
+        'reserv_user_id',
+        'reserv_guest_firstname',
+        'reserv_guest_lastname',
+        'reserv_guest_phone',
+        'reserv_guest_email',
+        'reserv_listing_id',
+        'reserv_arrive',
+        'reserv_depart',
+        'reserv_guests',
+        'reserv_total',
+        'reserv_payment_status',
     ];
-        // update_post_meta($post_id, 'boostly_geolocation_long', $long);
+
     foreach ($field_list as $fieldName) {
         if (array_key_exists( $fieldName, $_POST)) {
             update_post_meta( $post_id, $fieldName, sanitize_text_field($_POST[$fieldName]) );

@@ -1,5 +1,112 @@
 <?php
 // boostly_api_meta_box - Availability
+if( !function_exists( 'boostly_api_metabox_reservation_details' ) ) {
+    function boostly_api_metabox_reservation_details($post) {
+        $reservation_post_id  = $post->ID;
+        ?>
+
+
+        <div class="form-details">
+
+            <div class="form-details-row">
+                <h3>Status</h3>
+               <div class="form-fields column-6">
+                   <label for="reserv_status">Reservation Status</label>
+                   <input type="text" name="reserv_status" id="reserv_status" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_status', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_user_id">User ID</label>
+                   <input type="text" name="reserv_user_id" id="reserv_user_id" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_user_id', true) ) ?>">
+               </div>
+            </div>
+
+            <div class="form-details-row">
+                <h3>Guests Info</h3>
+               <div class="form-fields column-6">
+                   <label for="reserv_guest_firstname">First Name</label>
+                   <input type="text" name="reserv_guest_firstname" id="reserv_guest_firstname" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_firstname', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_guest_lastname">Last Name</label>
+                   <input type="text" name="reserv_guest_lastname" id="reserv_guest_lastname" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_lastname', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_guest_phone">Phone</label>
+                   <input type="text" name="reserv_guest_phone" id="reserv_guest_phone" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_phone', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_guest_email">Email</label>
+                   <input type="text" name="reserv_guest_email" id="reserv_guest_email" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_email', true) ) ?>">
+               </div>
+            </div>
+
+            <div class="form-details-row">
+                <h3>Reservation Info</h3>
+               <div class="form-fields column-6">
+                   <label for="reserv_listing_id">Listing ID</label>
+                   <input type="text" name="reserv_listing_id" id="reserv_listing_id" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_listing_id', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_guests">Number of Guest/s</label>
+                   <input type="text" name="reserv_guests" id="reserv_guests" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guests', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_arrive">Arrive Date</label>
+                   <input type="text" name="reserv_arrive" id="reserv_arrive" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_arrive', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_depart">Depart Date</label>
+                   <input type="text" name="reserv_depart" id="reserv_depart" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_depart', true) ) ?>">
+               </div>
+
+
+            </div>
+
+            <div class="form-details-row">
+                <h3>Reservation Payment Info</h3>
+               <div class="form-fields column-6">
+                   <label for="reserv_total">Total Payment</label>
+                   <input type="text" name="reserv_total" id="reserv_total" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_total', true) ) ?>">
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_payment_status">Payment Status</label>
+                   <input type="text" name="reserv_payment_status" id="reserv_payment_status" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_status', true) ) ?>">
+               </div>
+            </div>
+            
+        </div>
+    
+<!--         <table width="100%" class="display" style="text-align: left;">
+            <tbody>
+                <tr>
+                    <th style="border: 1px solid lightgray;padding: 10px;width: 20%;">Listing ID</th>
+                    <td style="border: 1px solid lightgray;padding: 10px;width: 80%;"><?= $listing_id ?></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid lightgray;padding: 10px;width: 20%;">Booked Dates</th>
+                    <td style="border: 1px solid lightgray;padding: 10px;width: 80%;"><?php //echo $listing_dates_not_available ?></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid lightgray;padding: 10px;width: 50%;">Available Dates</th>
+                    <td style="border: 1px solid lightgray;padding: 10px;width: 50%;"><?php //echo $listing_price ?></td>
+                </tr>
+
+            </tbody>
+        </table> -->
+        
+        <?php
+    }
+}
+
+// boostly_api_meta_box - Availability
 if( !function_exists( 'boostly_api_metabox_availability' ) ) {
     function boostly_api_metabox_availability($post) {
         $post_id            = $post->ID;
@@ -10,74 +117,19 @@ if( !function_exists( 'boostly_api_metabox_availability' ) ) {
         $listing_dates_not_available = get_post_meta($post_id, 'not_available_dates', true);
         $listing_dates_not_available = json_encode(explode(", ", $listing_dates_not_available));
 
-
         ?>
 
-        <div class="calendar-wrapper" style="display: none;";>
-            <div class="header calendar-header">
-                <p class="current-date">May 2022</p>
-                <div class="icons">
-                    <span class="material-symbols-rounded left"><i class="fa-solid fa-angle-left"></i></span>
-                    <span class="material-symbols-rounded right"><i class="fa-solid fa-angle-right"></i></span>
-                </div>
-            </div>
-            <div class="calendar calendar-body">
-                <ul class="weeks">
-                    <li>Sun</li>
-                    <li>Mon</li>
-                    <li>Tue</li>
-                    <li>Wed</li>
-                    <li>Thu</li>
-                    <li>Fri</li>
-                    <li>Sat</li>
-                </ul>
-                <ul class="days">
-                    <!-- <li class="inactive">25</li>
-                    <li class="inactive">26</li>
-                    <li class="inactive">27</li>
-                    <li class="inactive">28</li>
-                    <li class="active">29</li>
-                    <li>30</li>
-                    <li>31</li>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                    <li>8</li>
-                    <li>9</li>
-                    <li>10</li>
-                    <li>11</li>
-                    <li>12</li>
-                    <li>13</li>
-                    <li>14</li>
-                    <li>15</li>
-                    <li>16</li>
-                    <li>17</li>
-                    <li>18</li>
-                    <li>19</li>
-                    <li>20</li>
-                    <li>21</li>
-                    <li>22</li>
-                    <li>23</li>
-                    <li>24</li> -->
-    
-                </ul>
-            </div>
-        </div>
         <div class="form-listing-details">
             <div class="form-listing-details-row">
 
-                    <div class="listng-fields column-2">
+                    <div class="listing-fields column-2">
                         <label for="listing_guest">Arrive</label>
                         <div class="input-group">
                             <input class="form-control" id="arrive_date_picker" name="arrive_date_picker" placeholder="Arrive Date">
                             <input class="form-control" id="depart_date_picker" name="depart_date_picker" placeholder="Depart Date">
                         </div>
                     </div>
-                    <div class="listng-fields">
+                    <div class="listing-fields">
                         <label for="listing_guest">Availability</label>
                         <input type="text" name="not_available_dates" id="not_available_dates" value="<?= esc_attr( get_post_meta(get_the_ID(), 'not_available_dates', true) ) ?>">
                     </div>
@@ -176,7 +228,7 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
         
         ?>
 
-        <style>
+<!--         <style>
             .form-listing-details{
                 margin-top:  20px;
             }
@@ -194,69 +246,83 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                 margin-top: 0;
             }
 
-            .listng-fields,
-            .listng-fields > input{
+            .listing-fields,
+            .listing-fields > input{
                 width: 100%;
             }
-            .listng-fields.column-2{
+            .listing-fields.column-2{
                 width: 49%;
             }
-            .listng-fields.column-3{
+            .listing-fields.column-3{
                 width: 32%;
             }
-        </style>
+        </style> -->
         <div class="form-listing-details">
             <div class="form-listing-details-row">
-               <div class="listng-fields column-3">
-                   <label for="listing_guest">No. of Guest</label>
-                   <input type="text" name="listing_guests" id="listing_guests" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_guests', true) ) ?>">
-               </div>
 
-               <div class="listng-fields column-3">
+                <div class="listing-fields column-3">
+                    <label for="listing_guest">No. of Guest</label>
+                    <input type="text" name="listing_guests" id="listing_guests" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_guests', true) ) ?>">
+                </div>
+
+                <div class="listing-fields column-3">
+                    <label for="listing_extra_guest_allowed">Extra Guest Allowed</label>
+                    <input type="number" min="0" name="listing_extra_guest_allowed" id="listing_extra_guest_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_extra_guest_allowed', true) ) ?>">
+                </div>
+
+                <div class="listing-fields column-3">
+                    <label for="listing_extra_guest_fee">Extra Guest Fee (<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>)</label>
+                    <input type="number" min="0" name="listing_extra_guest_fee" id="listing_extra_guest_fee" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_extra_guest_fee', true) ) ?>">
+                </div>
+            
+            </div>
+
+            <div class="form-listing-details-row">
+               <div class="listing-fields column-2">
                    <label for="listing_beds">No. of Bed</label>
                    <input type="text" name="listing_beds" id="listing_beds" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_beds', true) ) ?>">
                </div>
 
-               <div class="listng-fields column-3">
+               <div class="listing-fields column-2">
                    <label for="listing_baths">No. of Bath</label>
                    <input type="text" name="listing_baths" id="listing_baths" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_baths', true) ) ?>">
                </div>
             </div>
 
             <div class="form-listing-details-row">
-               <div class="listng-fields column-2">
+               <div class="listing-fields column-2">
                    <label for="listing_guest">Cleaning Fee (<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>)</label>
                    <input type="text" name="listing_cleaning_fee" id="listing_cleaning_fee" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_cleaning_fee', true) ) ?>">
                </div>
 
-               <div class="listng-fields column-2">
+               <div class="listing-fields column-2">
                    <label for="listing_beds">Security Deposit (<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>)</label>
                    <input type="text" name="listing_security_deposit" id="listing_security_deposit" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_security_deposit', true) ) ?>">
                </div>
 
-               <div class="listng-fields column-2">
+               <div class="listing-fields column-2">
                    <label for="listing_baths">Service Fees (<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>)</label>
                    <input type="text" name="listing_service_fee" id="listing_service_fee" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_service_fee', true) ) ?>">
                </div>
 
-               <div class="listng-fields column-2">
+               <div class="listing-fields column-2">
                    <label for="listing_baths">Taxes %</label>
                    <input type="number" min='0' max='100' name="listing_tax" id="listing_tax" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_tax', true) ) ?>">
                </div>
             </div>
 
             <div class="form-listing-details-row">
-                <div class="listng-fields column-3">
+                <div class="listing-fields column-3">
                     <label for="listing_id">Listing ID</label>
                     <input type="text" name="listing_id" id="listing_id" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_id', true) ) ?>">
                 </div>
 
-                <div class="listng-fields column-3">
+                <div class="listing-fields column-3">
                     <label for="listing_currency">Currency</label>
                     <input type="text" name="listing_currency" id="listing_currency" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_currency', true) ) ?>">
                 </div>
 
-                <div class="listng-fields column-3">
+                <div class="listing-fields column-3">
                     <label for="listing_price">Price</label>
                     <input type="text" name="listing_price" id="listing_price" value="<?= esc_attr( get_post_meta(get_the_ID(), 'listing_price', true) ) ?>">
                 </div>
@@ -264,24 +330,24 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
             </div>
 
             <div class="form-listing-details-row">
-                <div class="listng-fields">
+                <div class="listing-fields">
                     <label for="listing_address">Address</label>
                     <input type="text" name="listing_address" id="listing_address" value="<?= esc_attr( get_post_meta(get_the_Id(), 'listing_address', true) ) ?>">
                 </div>
 
-                <div class="listng-fields column-2">
+                <div class="listing-fields column-2">
                     <label for="listing_latitude ">Latitude</label>
                     <input type="text" name="listing_latitude" id="listing_latitude" value="<?= esc_attr( get_post_meta(get_the_Id(), 'listing_latitude', true) ) ?>">
                 </div>
 
-                <div class="listng-fields column-2">
+                <div class="listing-fields column-2">
                     <label for="listing_longitude">Longitude</label>
                     <input type="text" name="listing_longitude" id="listing_longitude" value="<?= esc_attr( get_post_meta(get_the_Id(), 'listing_longitude', true) ) ?>">
                 </div>
             </div>
 
             <div class="form-listing-details-row">
-                <div class="listng-fields">
+                <div class="listing-fields">
                     <label for="listing_gallery">Gallery</label>
                     <input type="text" name="listing_gallery" id="listing_gallery" value="<?= $listing_gallery ?>">
 

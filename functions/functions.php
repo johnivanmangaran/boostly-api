@@ -1,4 +1,72 @@
 <?php
+
+
+// Register the columns.
+add_filter( "manage_reservations_posts_columns", function ( $defaults ) {
+	unset($defaults['author'], $defaults['date']);
+	$defaults['Name'] = 'Name';
+	$defaults['Post Listing ID'] = 'Post Listing ID';
+    $defaults['Listing ID'] = 'Listing ID';
+    $defaults['Arrive Date'] = 'Arrive Date';
+    $defaults['Depart Date'] = 'Depart Date';
+    $defaults['Guests'] = 'Guests';
+    $defaults['Total'] = 'Total';
+    $defaults['Reservation Status'] = 'Reservation Status';
+    $defaults['Payment Status'] = 'Payment Status';
+
+	return $defaults;
+} );
+
+// Handle the value for each of the new columns.
+add_action( "manage_reservations_posts_custom_column", function ( $column_name, $post_id ) {
+	$post_listing_id = get_post_meta($post_id, 'reserv_listing_id', true);
+	if ( $column_name == 'Name' ) {
+		echo get_post_meta($post_id, 'reserv_guest_firstname', true)." ".get_post_meta($post_id, 'reserv_guest_lastname', true);
+	}
+	
+	if ( $column_name == 'Post Listing ID' ) {
+		// Display an ACF field
+		echo $post_listing_id;
+	}
+
+    if ( $column_name == 'Listing ID' ) {
+		// Display an ACF field
+		echo get_post_meta($post_listing_id, 'listing_id', true);
+	}
+
+    if ( $column_name == 'Arrive Date' ) {
+		// Display an ACF field
+		echo get_post_meta($post_id, 'reserv_arrive', true);
+	}
+
+    if ( $column_name == 'Depart Date' ) {
+		// Display an ACF field
+		echo get_post_meta($post_id, 'reserv_depart', true);
+	}
+
+    if ( $column_name == 'Guests' ) {
+		// Display an ACF field
+		echo get_post_meta($post_id, 'reserv_guests', true);
+	}
+
+    if ( $column_name == 'Total' ) {
+		// Display an ACF field
+		echo get_post_meta($post_id, 'reserv_total', true);
+	}
+
+    if ( $column_name == 'Reservation Status' ) {
+		// Display an ACF field
+		echo get_post_meta($post_id, 'reserv_status', true);
+	}
+
+    if ( $column_name == 'Payment Status' ) {
+		// Display an ACF field
+		echo get_post_meta($post_id, 'reserv_payment_status', true);
+	}
+
+	
+}, 10, 2 );
+
 // boostly_api_meta_box - Availability
 if( !function_exists( 'boostly_api_metabox_reservation_details' ) ) {
     function boostly_api_metabox_reservation_details($post) {
@@ -7,17 +75,18 @@ if( !function_exists( 'boostly_api_metabox_reservation_details' ) ) {
 
 
         <div class="form-details">
-
             <div class="form-details-row">
                 <h3>Status</h3>
                <div class="form-fields column-6">
                    <label for="reserv_status">Reservation Status</label>
-                   <input type="text" name="reserv_status" id="reserv_status" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_status', true) ) ?>">
+                   <input type="hidden" name="reserv_status" id="reserv_status" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_status', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_status', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_user_id">User ID</label>
-                   <input type="text" name="reserv_user_id" id="reserv_user_id" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_user_id', true) ) ?>">
+                   <input type="hidden" name="reserv_user_id" id="reserv_user_id" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_user_id', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_user_id', true) ) ?><span></div>
                </div>
             </div>
 
@@ -25,60 +94,70 @@ if( !function_exists( 'boostly_api_metabox_reservation_details' ) ) {
                 <h3>Guests Info</h3>
                <div class="form-fields column-6">
                    <label for="reserv_guest_firstname">First Name</label>
-                   <input type="text" name="reserv_guest_firstname" id="reserv_guest_firstname" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_firstname', true) ) ?>">
+                   <input type="hidden" name="reserv_guest_firstname" id="reserv_guest_firstname" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_firstname', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_firstname', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_guest_lastname">Last Name</label>
-                   <input type="text" name="reserv_guest_lastname" id="reserv_guest_lastname" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_lastname', true) ) ?>">
+                   <input type="hidden" name="reserv_guest_lastname" id="reserv_guest_lastname" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_lastname', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_lastname', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_guest_phone">Phone</label>
-                   <input type="text" name="reserv_guest_phone" id="reserv_guest_phone" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_phone', true) ) ?>">
+                   <input type="hidden" name="reserv_guest_phone" id="reserv_guest_phone" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_phone', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_phone', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_guest_email">Email</label>
-                   <input type="text" name="reserv_guest_email" id="reserv_guest_email" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_email', true) ) ?>">
+                   <input type="hidden" name="reserv_guest_email" id="reserv_guest_email" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_email', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guest_email', true) ) ?><span></div>
                </div>
             </div>
 
             <div class="form-details-row">
-                <h3>Reservation Info</h3>
+                <h3>Reservation Details</h3>
                <div class="form-fields column-6">
                    <label for="reserv_listing_id">Listing ID</label>
-                   <input type="text" name="reserv_listing_id" id="reserv_listing_id" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_listing_id', true) ) ?>">
+                   <input type="hidden" name="reserv_listing_id" id="reserv_listing_id" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_listing_id', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_listing_id', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_guests">Number of Guest/s</label>
-                   <input type="text" name="reserv_guests" id="reserv_guests" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guests', true) ) ?>">
+                   <input type="hidden" name="reserv_guests" id="reserv_guests" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guests', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_guests', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_arrive">Arrive Date</label>
-                   <input type="text" name="reserv_arrive" id="reserv_arrive" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_arrive', true) ) ?>">
+                   <input type="hidden" name="reserv_arrive" id="reserv_arrive" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_arrive', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_arrive', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_depart">Depart Date</label>
-                   <input type="text" name="reserv_depart" id="reserv_depart" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_depart', true) ) ?>">
+                   <input type="hidden" name="reserv_depart" id="reserv_depart" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_depart', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_depart', true) ) ?><span></div>
                </div>
 
 
             </div>
 
             <div class="form-details-row">
-                <h3>Reservation Payment Info</h3>
+                <h3>Payment Info</h3>
                <div class="form-fields column-6">
                    <label for="reserv_total">Total Payment</label>
-                   <input type="text" name="reserv_total" id="reserv_total" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_total', true) ) ?>">
+                   <input type="hidden" name="reserv_total" id="reserv_total" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_total', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_total', true) ) ?><span></div>
                </div>
 
                <div class="form-fields column-6">
                    <label for="reserv_payment_status">Payment Status</label>
-                   <input type="text" name="reserv_payment_status" id="reserv_payment_status" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_status', true) ) ?>">
+                   <input type="hidden" name="reserv_payment_status" id="reserv_payment_status" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_status', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_status', true) ) ?><span></div>
                </div>
             </div>
             

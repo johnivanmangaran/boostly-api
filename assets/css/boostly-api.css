@@ -50,6 +50,15 @@
     margin-top: 0;
 }
 
+.form-details-row .form-fields label{
+    font-weight: 700;
+}
+
+.form-details-row .form-fields div.value{
+    border: 1px dotted #ccc;
+    padding: 10px;
+}
+
 .form-fields,
 .form-fields > input,
 .listing-fields,

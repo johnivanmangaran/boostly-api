@@ -1,7 +1,7 @@
 <?php
 
 
-// Register the columns.
+// Reservations - Register the columns.
 add_filter( "manage_reservations_posts_columns", function ( $defaults ) {
 	unset($defaults['author'], $defaults['date']);
 	$defaults['Name'] = 'Name';
@@ -17,7 +17,7 @@ add_filter( "manage_reservations_posts_columns", function ( $defaults ) {
 	return $defaults;
 } );
 
-// Handle the value for each of the new columns.
+// Reservations - Handle the value for each of the new columns.
 add_action( "manage_reservations_posts_custom_column", function ( $column_name, $post_id ) {
 	$post_listing_id = get_post_meta($post_id, 'reserv_listing_id', true);
 	if ( $column_name == 'Name' ) {
@@ -66,6 +66,7 @@ add_action( "manage_reservations_posts_custom_column", function ( $column_name, 
 
 	
 }, 10, 2 );
+
 
 // boostly_api_meta_box - Availability
 if( !function_exists( 'boostly_api_metabox_reservation_details' ) ) {
@@ -307,35 +308,6 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
         
         ?>
 
-<!--         <style>
-            .form-listing-details{
-                margin-top:  20px;
-            }
-
-            .form-listing-details-row{
-                width:  100%;
-                display:  flex;
-                flex-wrap: wrap;
-                column-gap: 20px;
-                row-gap: 20px;
-                margin-top: 20px;
-            }
-
-            .form-listing-details-row:first-child{
-                margin-top: 0;
-            }
-
-            .listing-fields,
-            .listing-fields > input{
-                width: 100%;
-            }
-            .listing-fields.column-2{
-                width: 49%;
-            }
-            .listing-fields.column-3{
-                width: 32%;
-            }
-        </style> -->
         <div class="form-listing-details">
             <div class="form-listing-details-row">
 
@@ -438,6 +410,36 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                 </div>
                 <?php //property_gallery_metabox_callback(); ?>
             </div>
+
+            <div class="form-listing-details-row">
+                <div class="listing-fields">
+                    <h3>Terms & Rules</h3>
+                </div>
+                <div class="listing-fields column-2">
+                    <input type="hidden" name="smoking_allowed" id="smoking_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'smoking_allowed', true) ) ?>">
+                    <input type="checkbox" name="cb_smoking_allowed" id="cb_smoking_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_smoking_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'smoking_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <label for="cb_smoking_allowed">Smoking allowed</label>
+                </div>
+
+                <div class="listing-fields column-2">
+                    <input type="hidden" name="pets_allowed" id="pets_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'pets_allowed', true) ) ?>">
+                    <input type="checkbox" name="cb_pets_allowed" id="cb_pets_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_pets_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'pets_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <label for="cb_pets_allowed">Pets allowed</label>
+                </div>
+
+                <div class="listing-fields column-2">
+                    <input type="hidden" name="party_allowed" id="party_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'party_allowed', true) ) ?>">
+                    <input type="checkbox" name="cb_party_allowed" id="cb_party_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_party_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'party_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <label for="cb_party_allowed">Party allowed</label>
+                </div>
+
+                <div class="listing-fields column-2">
+                    <input type="hidden" name="children_allowed" id="children_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'children_allowed', true) ) ?>">
+                    <input type="checkbox" name="cb_children_allowed" id="cb_children_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_children_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'children_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <label for="cb_children_allowed">Children allowed</label>
+                </div>
+            </div>
+
         </div>
         <?php
 

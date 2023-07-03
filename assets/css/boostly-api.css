@@ -65,6 +65,10 @@
 .listing-fields > input{
     width: 100%;
 }
+
+.listing-fields > input[type="checkbox"]{
+    width: auto;
+}
 .form-fields.column-2,
 .listing-fields.column-2{
     width: 49%;

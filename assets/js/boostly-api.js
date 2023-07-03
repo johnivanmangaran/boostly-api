@@ -1,6 +1,20 @@
 ! function($, window, document, _undefined) {
     $(function() {
         $(document).ready(function() {
+
+
+            $(document).on('change', '#cb_smoking_allowed, #cb_pets_allowed, #cb_party_allowed, #cb_children_allowed', function(e) {
+                // console.log('test');
+                if( $(this).prop('checked') ){
+                    $(this).prev().val("Yes");
+                    // $(this).attr('checked');
+                } else{
+                    $(this).prev().val("");
+                    // $(this).removeAttr('checked');
+                }
+            });
+
+
             // Instantiates the variable that holds the media library frame.
             var meta_image_frame;
             // Runs when the image button is clicked. You need to insert ID of your button

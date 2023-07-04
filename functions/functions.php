@@ -406,7 +406,7 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                     <ul id="listing_media_lists" class="listing_media_lists" name="listing_gallery">
                         <?= $listing_gallery_html ?>
                     </ul>
-                    <button id="listing_add_image_gallery">Upload Images</button>
+                    <button id="listing_add_image_gallery" class="button">Upload Images</button>
                 </div>
                 <?php //property_gallery_metabox_callback(); ?>
             </div>

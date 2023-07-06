@@ -279,3 +279,33 @@
     padding: 0;
     height: 0;
 }
+
+/* Listing Settings */
+#listing-settings-section{
+    padding: 50px 30px;
+}
+.listing-settings-wrapper{
+    margin-bottom: 40px;
+}
+#listing-settings-section h3.section-title{
+    margin-bottom: 20px;
+}
+
+/* .settings-wrapper .form-fields input[type="checkbox"]{
+    margin-left: 20px;
+} */
+.settings-wrapper .form-fields{
+    margin-bottom: 15px;
+}
+.settings-wrapper .form-fields label{
+    width: 20%;
+    font-weight: 700;
+}
+.settings-wrapper .form-fields label ~ input[type="text"]{
+    width: 70%;
+}
+
+.update-button-wrapper,
+.paypal-settings-wrapper{
+    margin-top: 30px;
+}

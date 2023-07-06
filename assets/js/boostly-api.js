@@ -14,6 +14,72 @@
                 }
             });
 
+            $(document).on('change', '#cb_stripe_enable', function(e) {
+                // console.log('test');
+                if( $(this).prop('checked') ){
+                    $(this).val("true");
+                    $(".stripe-enable-wrapper .stripe-details").fadeIn(500);
+                } else{
+                    $(this).val("no");
+                    $(".stripe-enable-wrapper .stripe-details").fadeOut(0);
+                }
+            });
+
+            $(document).on('change', '#cb_sandbox_stripe', function(e) {
+
+                if( $(this).prop('checked') ){
+                    $(this).val("true");
+                    $(".stripe-enable-wrapper .sandbox-keys-group").fadeIn(500);
+                    $(".stripe-enable-wrapper .live-keys-group").fadeOut(0);
+                } else{
+                    $(this).val("no");
+                    $(".stripe-enable-wrapper .sandbox-keys-group").fadeOut(0);
+                    $(".stripe-enable-wrapper .live-keys-group").fadeIn(500);
+                }
+            });
+
+            $(document).on('change', '#cb_paypal_enable', function(e) {
+                // console.log('test');
+                if( $(this).prop('checked') ){
+                    $(this).val("true");
+                    // $(".stripe-enable-wrapper .stripe-details").fadeIn(500);
+                } else{
+                    $(this).val("no");
+                    // $(".stripe-enable-wrapper .stripe-details").fadeOut(0);
+                }
+            });
+
+            $(document).on('click', '#listing-update-settings-btn', function(e) {
+                
+                // $.ajax({
+                //     url: ajaxurl,
+                //     type: "POST",
+                //     method: "POST",
+                //     data: {
+                //         action: 'boostly_api_sync_listings_ajax'
+                //     },
+                //     beforeSend: function() {
+                //         $("#boostly_api_sync_listings").html('Listings Syncing..');
+
+                //     },
+                //     success: function(response) {
+                //         $("#boostly_api_sync_listings").html('Listings Sync Successfully');
+                //         // console.log(response);
+                //         // alert('Successfully');
+                //         setTimeout(function() {
+                //             $("#boostly_api_sync_listings").html('Listings Sync');
+                //         }, 3000);
+                //     },
+                //     error: function(error) {
+                //         $("#boostly_api_sync_listings").text('Listings Sync Error...');
+                //         console.log(JSON.parse(error));
+                //     }
+                // });
+
+            });
+
+            
+
 
             // Instantiates the variable that holds the media library frame.
             var meta_image_frame;

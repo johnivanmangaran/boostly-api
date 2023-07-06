@@ -417,25 +417,25 @@ if( !function_exists( 'boostly_api_custom_fields' ) ) {
                 </div>
                 <div class="listing-fields column-2">
                     <input type="hidden" name="smoking_allowed" id="smoking_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'smoking_allowed', true) ) ?>">
-                    <input type="checkbox" name="cb_smoking_allowed" id="cb_smoking_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_smoking_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'smoking_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <input type="checkbox" name="cb_smoking_allowed" id="cb_smoking_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_smoking_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'smoking_allowed', true) == "yes" ){ echo 'checked'; }?> >
                     <label for="cb_smoking_allowed">Smoking allowed</label>
                 </div>
 
                 <div class="listing-fields column-2">
                     <input type="hidden" name="pets_allowed" id="pets_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'pets_allowed', true) ) ?>">
-                    <input type="checkbox" name="cb_pets_allowed" id="cb_pets_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_pets_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'pets_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <input type="checkbox" name="cb_pets_allowed" id="cb_pets_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_pets_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'pets_allowed', true) == "yes" ){ echo 'checked'; }?> >
                     <label for="cb_pets_allowed">Pets allowed</label>
                 </div>
 
                 <div class="listing-fields column-2">
                     <input type="hidden" name="party_allowed" id="party_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'party_allowed', true) ) ?>">
-                    <input type="checkbox" name="cb_party_allowed" id="cb_party_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_party_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'party_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <input type="checkbox" name="cb_party_allowed" id="cb_party_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_party_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'party_allowed', true) == "yes" ){ echo 'checked'; }?> >
                     <label for="cb_party_allowed">Party allowed</label>
                 </div>
 
                 <div class="listing-fields column-2">
                     <input type="hidden" name="children_allowed" id="children_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'children_allowed', true) ) ?>">
-                    <input type="checkbox" name="cb_children_allowed" id="cb_children_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_children_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'children_allowed', true) == "Yes" ){ echo 'checked'; }?> >
+                    <input type="checkbox" name="cb_children_allowed" id="cb_children_allowed" value="<?= esc_attr( get_post_meta(get_the_ID(), 'cb_children_allowed', true) ) ?>" <?php if(get_post_meta(get_the_ID(), 'children_allowed', true) == "yes" ){ echo 'checked'; }?> >
                     <label for="cb_children_allowed">Children allowed</label>
                 </div>
             </div>

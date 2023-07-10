@@ -64,9 +64,22 @@ function boostly_api_settings_page() {
         if ( isset( $_POST['cb_paypal_enable'] ) ) {
             // - Sanitize the code
             update_option( 'cb_paypal_enable', sanitize_text_field($_POST['cb_paypal_enable']) );
-           
         } else{
             update_option( 'cb_paypal_enable', '');
+        }
+
+        if ( isset( $_POST['sandbox_paypal_clientid_key'] ) ) {
+            // - Sanitize the code
+            update_option( 'sandbox_paypal_clientid_key', sanitize_text_field($_POST['sandbox_paypal_clientid_key']) );
+        } else{
+            update_option( 'sandbox_paypal_clientid_key', '');
+        }
+
+        if ( isset( $_POST['sandbox_paypal_clientsecret_key'] ) ) {
+            // - Sanitize the code
+            update_option( 'sandbox_paypal_clientsecret_key', sanitize_text_field($_POST['sandbox_paypal_clientsecret_key']) );
+        } else{
+            update_option( 'sandbox_paypal_clientsecret_key', '');
         }
     }
 
@@ -147,6 +160,18 @@ function boostly_api_settings_page() {
                             <div class="listing-fields form-fields">
                                 <label for="cb_paypal_enable">Enable Paypal:</label>
                                 <input type="checkbox" name="cb_paypal_enable" id="cb_paypal_enable" value="<?= get_option('cb_paypal_enable') ?>" <?php if( get_option('cb_paypal_enable') == "true" ){ echo 'checked'; }?>>
+                            </div>
+
+                            <div class="sandbox-keys-group" <?php if( !get_option('cb_paypal_enable') ){ echo 'style="display:none;"'; }?> >
+                                <div class="listing-fields form-fields">
+                                    <label for="sandbox_paypal_clientid_key">Client ID:</label>
+                                    <input type="text" name="sandbox_paypal_clientid_key" id="sandbox_paypal_clientid_key" value="<?= esc_attr( get_option('sandbox_paypal_clientid_key') ) ?>" >
+                                </div>
+
+                                <div class="listing-fields form-fields">
+                                    <label for="sandbox_paypal_clientsecret_key">Client Secret:</label>
+                                    <input type="text" name="sandbox_paypal_clientsecret_key" id="sandbox_paypal_clientsecret_key" value="<?= esc_attr( get_option('sandbox_paypal_clientsecret_key') ) ?>" >
+                                </div>
                             </div>
 
                         </div>

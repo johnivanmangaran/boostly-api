@@ -160,6 +160,30 @@ if( !function_exists( 'boostly_api_metabox_reservation_details' ) ) {
                    <input type="hidden" name="reserv_payment_status" id="reserv_payment_status" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_status', true) ) ?>">
                    <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_status', true) ) ?><span></div>
                </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_initial_payment">Partial Payment 30%</label>
+                   <input type="hidden" name="reserv_initial_payment" id="reserv_initial_payment" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_initial_payment', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_initial_payment', true) ) ?><span></div>
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_remaining_balance">Remaining Balance</label>
+                   <input type="hidden" name="reserv_remaining_balance" id="reserv_remaining_balance" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_remaining_balance', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_remaining_balance', true) ) ?><span></div>
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_payment_method">Payment Method</label>
+                   <input type="hidden" name="reserv_payment_method" id="reserv_payment_method" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_method', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_method', true) ) ?><span></div>
+               </div>
+
+               <div class="form-fields column-6">
+                   <label for="reserv_payment_id">Payment ID</label>
+                   <input type="hidden" name="reserv_payment_id" id="reserv_payment_id" value="<?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_id', true) ) ?>">
+                   <div class="value"><span><?= esc_attr( get_post_meta($reservation_post_id, 'reserv_payment_id', true) ) ?><span></div>
+               </div>
             </div>
             
         </div>

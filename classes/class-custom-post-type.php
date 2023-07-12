@@ -265,6 +265,10 @@ function save_meta_box_data($post_id) {
         'reserv_guests',
         'reserv_total',
         'reserv_payment_status',
+        'reserv_initial_payment',
+        'reserv_remaining_balance',
+        'reserv_payment_method',
+        'reserv_payment_id',
     ];
 
     foreach ($field_list as $fieldName) {

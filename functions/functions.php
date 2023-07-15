@@ -25,42 +25,34 @@ add_action( "manage_reservations_posts_custom_column", function ( $column_name, 
 	}
 	
 	if ( $column_name == 'Post Listing ID' ) {
-		// Display an ACF field
 		echo $post_listing_id;
 	}
 
     if ( $column_name == 'Listing ID' ) {
-		// Display an ACF field
 		echo get_post_meta($post_listing_id, 'listing_id', true);
 	}
 
     if ( $column_name == 'Arrive Date' ) {
-		// Display an ACF field
 		echo get_post_meta($post_id, 'reserv_arrive', true);
 	}
 
     if ( $column_name == 'Depart Date' ) {
-		// Display an ACF field
 		echo get_post_meta($post_id, 'reserv_depart', true);
 	}
 
     if ( $column_name == 'Guests' ) {
-		// Display an ACF field
 		echo get_post_meta($post_id, 'reserv_guests', true);
 	}
 
     if ( $column_name == 'Total' ) {
-		// Display an ACF field
 		echo get_post_meta($post_id, 'reserv_total', true);
 	}
 
     if ( $column_name == 'Reservation Status' ) {
-		// Display an ACF field
 		echo get_post_meta($post_id, 'reserv_status', true);
 	}
 
     if ( $column_name == 'Payment Status' ) {
-		// Display an ACF field
 		echo get_post_meta($post_id, 'reserv_payment_status', true);
 	}
 
@@ -73,8 +65,6 @@ if( !function_exists( 'boostly_api_metabox_reservation_details' ) ) {
     function boostly_api_metabox_reservation_details($post) {
         $reservation_post_id  = $post->ID;
         ?>
-
-
         <div class="form-details">
             <div class="form-details-row">
                 <h3>Status</h3>

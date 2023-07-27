@@ -799,7 +799,6 @@ if( !function_exists( 'boostly_set_listing_category' ) ) {
             }
 
             wp_set_object_terms($id, array($name), $type, true);
-
             return $term_id;
         }
 
@@ -822,12 +821,8 @@ if( !function_exists( 'boostly_api_prepare_amenities' ) ) {
             $str = preg_split('/(?=[A-Z])/', $str, -1, PREG_SPLIT_NO_EMPTY);
             if( !empty( $str) && is_array( $str) ) {
                 $str = implode(" ", $str);
-        
             }
-
         }
-
         return $str;
-
     }
 }

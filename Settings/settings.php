@@ -1,18 +1,18 @@
 <?php
 // Admin Settings - 
-add_action( 'admin_menu', 'boostly_api_settings_page_init' );
+// add_action( 'admin_menu', 'boostly_api_settings_page_init' );
 
-function boostly_api_settings_page_init(){
-    $settings_page  = add_submenu_page( 
-        'edit.php?post_type=listing', 
-        'Listing Settings', 
-        'Listing Settings', 
-        'manage_options', 
-        'boostly-api-settings', 
-        'boostly_api_settings_page' 
-    );
+// function boostly_api_settings_page_init(){
+//     $settings_page  = add_submenu_page( 
+//         'edit.php?post_type=listing', 
+//         'Listing Settings', 
+//         'Listing Settings', 
+//         'manage_options', 
+//         'boostly-api-settings', 
+//         'boostly_api_settings_page' 
+//     );
 
-}
+// }
 
 
 /**
